@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Shhparty</string>
+    <string name="partyhost">Start a Party!!</string>
+    <string name="search">Search for parties..</string>
+
+    <string name="menuoption">My Profile</string>
+    <string name="selectsongtext">Select songs to be added to playlist..</string>
+
+    <string name="createplaylist">CREATE PLAYLIST</string>
+</resources>
