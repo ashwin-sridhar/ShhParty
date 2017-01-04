@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import de.tudarmstadt.informatik.tk.shhparty.host.SelectSongsActivity;
+import de.tudarmstadt.informatik.tk.shhparty.member.SearchForParties;
 import de.tudarmstadt.informatik.tk.shhparty.user.CreateProfile;
 
 public class HostorJoinActivity extends Activity {
@@ -34,6 +36,11 @@ public class HostorJoinActivity extends Activity {
 
     }
     public void goToSelectParty(View view){
-        //// TODO: 11/15/2016 Transition to select part event to join activity 
+        //// TODO: 11/15/2016 Transition to select part event to join activity
+        Log.d("HostorJoin","calling method to search for parties..");
+        Intent toSelectParty=new Intent(this,SearchForParties.class);
+        startActivity(toSelectParty);
+
+
     }
 }

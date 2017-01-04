@@ -1,20 +1,26 @@
 package de.tudarmstadt.informatik.tk.shhparty.music;
 
+import java.io.Serializable;
+
 /**
  * Created by Ashwin on 11/23/2016.
  */
 
-public class MusicBean {
+public class MusicBean implements Serializable {
 
 
     private long musicID;
     private String musicTitle;
     private String artist;
+    private boolean inPlayist;
+    private int votes;
 
-    public MusicBean(long musicID,String musicTitle,String artist) {
+    public MusicBean(long musicID,String musicTitle,String artist,boolean inPlayist,int votes) {
         this.musicID = musicID;
         this.musicTitle=musicTitle;
         this.artist=artist;
+        this.inPlayist=inPlayist;
+        this.votes=0;
     }
 
     public long getMusicID() {
@@ -42,4 +48,19 @@ public class MusicBean {
     }
 
 
+    public boolean isInPlayist() {
+        return inPlayist;
+    }
+
+    public void setInPlayist(boolean inPlayist) {
+        this.inPlayist = inPlayist;
+    }
+
+    public int getVotes() {
+        return votes;
+    }
+
+    public void setVotes(int votes) {
+        this.votes = votes;
+    }
 }

@@ -15,6 +15,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignBottom="@+id/musicrecycler"
         android:layout_centerHorizontal="true"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:onClick="packMusicInfoAndTransition"/>
 
 </RelativeLayout>

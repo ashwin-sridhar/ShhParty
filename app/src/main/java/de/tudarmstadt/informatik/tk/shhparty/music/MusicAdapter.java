@@ -73,4 +73,9 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
     {
         return listOfMusic.size();
     }
+
+
+    public MusicBean getItem(int position){
+        return listOfMusic.get(position);
+    }
 }

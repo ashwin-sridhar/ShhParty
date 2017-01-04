@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import de.tudarmstadt.informatik.tk.shhparty.wifip2p.ConnectionManager;
+import de.tudarmstadt.informatik.tk.shhparty.host.ConnectionManager;
+import de.tudarmstadt.informatik.tk.shhparty.host.SelectSongsActivity;
 
 public class PartyInfoActivity extends Activity {
 
@@ -17,7 +18,11 @@ public class PartyInfoActivity extends Activity {
 
     public void saveAndGotoConnMgr(View view){
         //// TODO: 11/28/2016 Async method call to save party info
-        Intent toSelectSongsAct=new Intent(this, SelectSongsActivity.class);
-        startActivity(toSelectSongsAct);
+        /*Intent toConnManager=new Intent(this, ConnectionManager.class);
+        startActivity(toConnManager);*/
+
+        Intent toSelectSongs=new Intent(this, SelectSongsActivity.class);
+        startActivity(toSelectSongs);
+
     }
 }
