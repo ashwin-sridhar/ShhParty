@@ -359,6 +359,25 @@ public class PartyHostServer extends Thread {
         }
     }
 
+    public void broadcastMusicInfo(ArrayList<MusicBean> musicInfoToShare)
+    {
+        if (musicInfoToShare.isEmpty())
+        {
+            return;
+        }
+
+        /*String command = PLAY_CMD + CMD_DELIMITER + fileName + CMD_DELIMITER
+                + String.valueOf(playTime) + CMD_DELIMITER
+                + String.valueOf(playPosition) + CMD_DELIMITER;*/
+
+        Log.d(LOG_TAG, "Sending arraylist of music: " + musicInfoToShare.toString());
+
+        for (Socket s : connections)
+        {
+            sendMusicAndList(s, musicInfoToShare);
+        }
+    }
+
     private void sendMusicAndList(Socket clientSocket, ArrayList<MusicBean> musicInfo){
 
         if (clientSocket == null)

@@ -220,7 +220,7 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
             case PartyHostServer.SERVER_CALLBACK:
                 serverThread = (PartyHostServer) msg.obj;
                 Log.d(LOG_TAG, "Retrieved server thread.");
-                makePlayCall(serverThread);
+                shareMusicAndPlaylist(serverThread);
                 break;
 
             default:
@@ -248,7 +248,8 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
     }
 
     public void shareMusicAndPlaylist(PartyHostServer sThread){
-        //send musicInfoToShare to thread which sends as bytes
+        Log.d(LOG_TAG,"Calling broadcast music on server thread"+musicInfoParcel.toString());
+        sThread.broadcastMusicInfo(musicInfoParcel);
     }
 }
 
