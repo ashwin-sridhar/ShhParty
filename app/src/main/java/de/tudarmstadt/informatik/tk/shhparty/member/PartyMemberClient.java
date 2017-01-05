@@ -8,6 +8,9 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -15,9 +18,11 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 
 import de.tudarmstadt.informatik.tk.shhparty.AppTimer;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
+import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 
 /**
  * Created by Ashwin on 12/11/2016.
@@ -68,6 +73,17 @@ public class PartyMemberClient extends Thread {
             {
                 InputStream iStream = socket.getInputStream();
                 OutputStream oStream = socket.getOutputStream();
+
+                ObjectInputStream objInStream=new ObjectInputStream(socket.getInputStream());
+                //ArrayList<MusicBean> receivedMusicInfo=new ArrayList<MusicBean>();
+
+                try {
+                    if(objInStream.readObject()!=null){
+                        Log.d(LOG_TAG,"yes! received something!");
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
 
                 // clear the buffer before reading
                 byte[] buffer = new byte[BUFFER_SIZE];
