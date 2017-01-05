@@ -10,41 +10,39 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="de.tudarmstadt.informatik.tk.shhparty.user.CreateProfile">
 
-    <Button
-        android:text="Choose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:id="@+id/button" />
+  <ImageView
+    android:id="@+id/imgView"
+    android:layout_width="285dp"
+    android:layout_height="100dp"
+    android:layout_weight="1"
+    android:layout_centerHorizontal="true"></ImageView>
 
-    <ImageView
-        android:src="@mipmap/profilepic_dummy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+  <Button
+    android:id="@+id/buttonLoadPicture"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="uploadImage"
+    android:layout_gravity="center"
+    android:layout_below="@+id/imgView"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="34dp" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Ashwin"
-        android:ems="10"
-        android:id="@+id/editText"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+  <Button
+    android:id="@+id/buttonEnter"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Enter"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="124dp"/>
 
-    <Button
-        android:text="Next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:id="@+id/button2"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/button"
-        android:onClick="saveAndGotoPartyInfo"/>
+  <EditText
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:inputType="textPersonName"
+    android:ems="10"
+    android:id="@+id/editText"
+    android:layout_centerVertical="true"
+    android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
