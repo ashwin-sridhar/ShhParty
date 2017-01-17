@@ -20,7 +20,7 @@ public class MusicBean implements Serializable {
         this.musicTitle=musicTitle;
         this.artist=artist;
         this.inPlayist=inPlayist;
-        this.votes=0;
+        this.votes=votes;
     }
 
     public long getMusicID() {

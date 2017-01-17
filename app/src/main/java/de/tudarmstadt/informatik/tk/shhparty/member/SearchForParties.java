@@ -1,6 +1,7 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -25,7 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.tudarmstadt.informatik.tk.shhparty.AppTimer;
+import de.tudarmstadt.informatik.tk.shhparty.PartyHome;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
+import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.ConnectionTemplate;
 import de.tudarmstadt.informatik.tk.shhparty.R;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.WiFiDirectPulseChecker;
@@ -299,6 +302,15 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                 clientThread = (PartyMemberClient) msg.obj;
                 Log.d(TAG, "Retrieved client thread.");
                 break;
+
+            case PartyMemberClient.PLAYLIST_RECEIVE:
+                Log.d(LOG_TAG,"Callback received, shud call activity");
+                ArrayList<MusicBean> musicInfo=(ArrayList<MusicBean>) msg.obj;
+                Intent topartyHome=new Intent(this, PartyHome.class);
+                topartyHome.putExtra("musicinfo",musicInfo);
+                startActivity(topartyHome);
+                break;
+
 
             default:
                 Log.d(TAG, "I thought we heard something? Message type: "

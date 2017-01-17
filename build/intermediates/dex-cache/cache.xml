@@ -3,24 +3,6 @@
 
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_43de12c616fb5ba95f36794f4fc5d84a2a04cde0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-24.2.1_8ff80b2d81b7df149a4937153c13d030c57be724\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Ashwin\.gradle\caches\modules-2\files-2.1\org.nanohttpd\nanohttpd\2.3.1\a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c\nanohttpd-2.3.1.jar"
         jumboMode="true"
         optimize="true"
@@ -30,57 +12,30 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.2.1\jars\classes.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\libs\internal_impl-23.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="d5c731fc64c03dfe04d51134955b483551c35849">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-24.2.1_8130916832de8858f0acd7a2de6638b121f98717\classes.dex" />
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_08347c819af65e2763eafe56fe602cc2ad4fa8e6\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="867dad63c33388ff8c7644b236579355036d075f">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_9104d1d33eacab0975bbfb0f30c1b2e78aaed67e\classes.dex" />
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_439366d450ecc6a38125ecd090bfeec9ad60fa99\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.2.1\jars\classes.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.2.1\jars\libs\internal_impl-23.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-24.2.1_8330a90cc8a6df00dc2b9464ed7c87c1bfbf131a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-24.2.1_e4a21448e258eeb7bd192b6fa0fe55db0f675084\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-24.2.1_303ace45a8d3dbac31affc2eb2e9f78396b915be\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-24.2.1_8834ecd4f2530da1db324a2e2707702cf18e7bdf\classes.dex" />
+        sha1="bd48446a8b4b2fdcac0e38f49b5d6dc3abb1eefa">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_4b8dc2b9500a327429b990c4434a36b5443b6c95\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -93,84 +48,57 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-24.2.1_2f2a7e5a595a0821b30e3f0ab84fa3e75607bb08\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Ashwin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.2.1_826a928eede0f79fdc512dcefa4295b5e273e028\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-24.2.1_2239b539031394d9814c9f6a053d3fc98e1af9db\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.2.1_1b351b229f58702fb7657d14d839e371c9e2450a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="dec6752d6a3f1825148f4539e9e848f9477492c9">
+        sha1="983da30847960ac3c38f88e2aad1473d15b362a3">
         <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_caa132043a9ecbc44ad2b3520351c017a0a1bc17\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_a1b4e7d4672b68467e58e3830c30766a2a8e63d6\classes.dex" />
+        sha1="b95d10913c24f217dca25ccfb8293a04ebfed3a8">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v13-23.2.1_d09174636309922a4f38f5e5d66c625355dd05f7\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-24.2.1_ca2ae463657dee447e4228c7ff6e204a23c962f2\classes.dex" />
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-23.2.1_9cbc2b3eda7bcffb4e080ce86e4a2abdba135f8d\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_e0412a87f665ee3c06692994e9e5208cd2955239\classes.dex" />
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_1494060cbc5c47875ad3aac272c80f2eb220598a\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_72fbc93f7509dab3b14c22a259f901515d9d25ef\classes.dex" />
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.2.1_800a52f760409ac4cc058e62ed8578ae57dc3030\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_03f3f75e079e3e6cf759bdd19f4c1157be855c92\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -178,8 +106,26 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="efe2bb4c253b425cc3496af4c66162b844d9e04f">
+        sha1="ffc3549e25a33c35337fd710f6c81619477661c8">
         <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_c7dc2471c0bcc9b66d2250f2a683a7fa8fde7506\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Ashwin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.2.1\support-annotations-23.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-23.2.1_96cc64db87c9d4ce72ae391c59525391277355ce\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_00f7e120ef68360e30e665027e63aee210571f07\classes.dex" />
     </item>
 
 </items>

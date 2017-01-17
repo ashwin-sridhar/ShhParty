@@ -41,6 +41,7 @@ public class PartyHostServer extends Thread {
     public static final int SERVER_PORT = 9001;
 
     public static final int SERVER_CALLBACK = 103;
+    public static final int SERVER_SENTPLAYLIST=104;
 
     // use a 10 second time out to receive an ack message
     public static final int ACK_TIMEOUT = 10000;
@@ -376,6 +377,7 @@ public class PartyHostServer extends Thread {
         {
             sendMusicAndList(s, musicInfoToShare);
         }
+        handler.obtainMessage(SERVER_SENTPLAYLIST,this).sendToTarget();
     }
 
     private void sendMusicAndList(Socket clientSocket, ArrayList<MusicBean> musicInfo){

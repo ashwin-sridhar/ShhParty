@@ -56,6 +56,7 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
     private WifiP2pDnsSdServiceRequest serviceRequest;
     private ArrayList<MusicBean> musicInfoParcel=new ArrayList<MusicBean>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,6 +222,9 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                 serverThread = (PartyHostServer) msg.obj;
                 Log.d(LOG_TAG, "Retrieved server thread.");
                 shareMusicAndPlaylist(serverThread);
+                break;
+            case PartyHostServer.SERVER_SENTPLAYLIST:
+                Log.d(LOG_TAG,"Playlist is sent, transitioning to party home");
                 break;
 
             default:

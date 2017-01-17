@@ -40,7 +40,12 @@ public class HostorJoinActivity extends Activity {
         Log.d("HostorJoin","calling method to search for parties..");
         Intent toSelectParty=new Intent(this,SearchForParties.class);
         startActivity(toSelectParty);
+    }
 
+    public void goToPartyHome(View view){
 
+        Log.d("HostorJoin","calling method to search for parties..");
+        Intent toPartyHome=new Intent(this,PartyHome.class);
+        startActivity(toPartyHome);
     }
 }

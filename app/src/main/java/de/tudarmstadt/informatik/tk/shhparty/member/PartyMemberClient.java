@@ -47,6 +47,7 @@ public class PartyMemberClient extends Thread {
 
     public static final int EVENT_RECEIVE_MSG = 100;
     public static final int CLIENT_CALLBACK = 101;
+    public static final int PLAYLIST_RECEIVE=103;
 
     public PartyMemberClient(Handler handler, InetAddress groupOwnerAddress,
                                AppTimer timer)
@@ -75,15 +76,17 @@ public class PartyMemberClient extends Thread {
                 OutputStream oStream = socket.getOutputStream();
 
                 ObjectInputStream objInStream=new ObjectInputStream(socket.getInputStream());
-                //ArrayList<MusicBean> receivedMusicInfo=new ArrayList<MusicBean>();
-
+                ArrayList<MusicBean> receivedMusicInfo=new ArrayList<MusicBean>();
                 try {
-                    if(objInStream.readObject()!=null){
-                        Log.d(LOG_TAG,"yes! received something!");
-                    }
+                    receivedMusicInfo=(ArrayList<MusicBean>) objInStream.readObject();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
+                   if(!receivedMusicInfo.isEmpty()){
+                        Log.d(LOG_TAG,"yes! received something!");
+                        handler.obtainMessage(PLAYLIST_RECEIVE,receivedMusicInfo).sendToTarget();
+                    }
+
 
                 // clear the buffer before reading
                 byte[] buffer = new byte[BUFFER_SIZE];

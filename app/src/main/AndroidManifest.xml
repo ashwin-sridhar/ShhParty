@@ -39,7 +39,8 @@
             android:name=".PartyInfoActivity"
             android:parentActivityName=".user.CreateProfile" />
         <activity android:name=".member.SearchForParties" />
-        <activity android:name=".DummyMusicPlay"></activity>
+        <activity android:name=".PartyHome" />
+        <activity android:name=".DummyMusicPlay" />
     </application>
 
 </manifest>
