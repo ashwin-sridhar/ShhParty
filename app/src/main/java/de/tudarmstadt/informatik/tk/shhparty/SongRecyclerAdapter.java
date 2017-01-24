@@ -7,7 +7,6 @@ package de.tudarmstadt.informatik.tk.shhparty;
 import android.content.Context;
 import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +20,18 @@ import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 public class SongRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
   Context c;
-  ArrayList<MusicBean> movies;
+  ArrayList<MusicBean> songs;
   private LayoutInflater mLayoutInflater;
-  private SortedList <MusicBean> mMovies;
+  private SortedList <MusicBean> mSongs;
   Map<String, String> map = new HashMap<String, String>();
   private String LOG_TAG="Shh_SortSongsAdapter";
 
-  public SongRecyclerAdapter(Context c, ArrayList<MusicBean> movies) {
+  public SongRecyclerAdapter(Context c, ArrayList<MusicBean> songs) {
     this.c = c;
-   this.movies = movies;
+   this.songs = songs;
     mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    mMovies = new SortedList<>(MusicBean.class, new MovieListCallback());
-    mMovies.addAll(movies);
+    mSongs = new SortedList<>(MusicBean.class, new SongListCallback());
+    mSongs.addAll(songs);
   }
 
   @Override
@@ -47,19 +46,19 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
   @Override
   public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-    final MusicBean movies = mMovies.get(position);
-    holder.songTitle.setText(movies.getMusicTitle());
-    holder.vote.setText(String.valueOf(movies.getVotes()));
-    holder.artist.setText(movies.getArtist());
+    final MusicBean songs = mSongs.get(position);
+    holder.songTitle.setText(songs.getMusicTitle());
+    holder.vote.setText(String.valueOf(songs.getVotes()));
+    holder.artist.setText(songs.getArtist());
     holder.img.setImageResource(R.drawable.like);
 
-    final String title = movies.getMusicTitle();
-    final int votes = movies.getVotes();
-    final String artist = movies.getArtist();
-    final long musicId = movies.getMusicID();
-    final boolean playlist = movies.isInPlayist();
+    final String title = songs.getMusicTitle();
+    final int votes = songs.getVotes();
+    final String artist = songs.getArtist();
+    final long musicId = songs.getMusicID();
+    final boolean playlist = songs.isInPlayist();
 
-   /*holder.img.setOnClickListener(new View.OnClickListener(){
+ /*  holder.img.setOnClickListener(new View.OnClickListener(){
      @Override
      public void onClick(View v) {
 
@@ -69,7 +68,7 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
          holder.vote.setText(""+count);
          String voteCount = holder.vote.getText().toString();
          MusicBean song = new MusicBean(musicId,title, artist,playlist, count);
-         mMovies.updateItemAt(position,song);
+         mSongs.updateItemAt(position,song);
          notifyDataSetChanged();
          //Add into an arraylist
 
@@ -85,10 +84,10 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
 
   @Override
   public int getItemCount() {
-    return movies.size();
+    return songs.size();
   }
 
-  private class MovieListCallback extends SortedList.Callback<MusicBean> {
+  private class SongListCallback extends SortedList.Callback<MusicBean> {
 
     @Override
     public int compare(MusicBean s1, MusicBean s2) {
