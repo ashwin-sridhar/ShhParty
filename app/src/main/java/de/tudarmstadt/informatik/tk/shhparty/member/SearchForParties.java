@@ -3,8 +3,6 @@ package de.tudarmstadt.informatik.tk.shhparty.member;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -15,18 +13,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import de.tudarmstadt.informatik.tk.shhparty.AppTimer;
-import de.tudarmstadt.informatik.tk.shhparty.PartyHome;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.ConnectionTemplate;
@@ -57,10 +52,17 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
     private Handler handler=new Handler(this);
     private AppTimer timer;
 
+    private boolean alreadyRendered=false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_for_parties);
+       /* findViewById(R.id.listOfParties).setVisibility(View.INVISIBLE);
+        findViewById(R.id.toolbar).setVisibility(View.INVISIBLE);
+        findViewById(R.id.tab_layout).setVisibility(View.INVISIBLE);
+        findViewById(R.id.pager).setVisibility(View.INVISIBLE);*/
 
         wifiStatesIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         wifiStatesIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -70,22 +72,22 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
         p2pManager= (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel=p2pManager.initialize(this,getMainLooper(),null);
 
-        listOfPartiesView= (ListView)findViewById(R.id.listOfParties);
+      /*  listOfPartiesView= (ListView)findViewById(R.id.listOfParties);
         partyListAdapter=new PartyListAdapter(this,R.id.listOfParties,R.id.list_item_partyservice,partiesList);
         listOfPartiesView.setAdapter(partyListAdapter);
-
-        //// TODO: 12/3/2016 discoverservices from here
+*/
+        // TODO: 1/24/2017 Make this an Asynchronous call 
         lookForParties();
 
 
 
-        listOfPartiesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+     /*   listOfPartiesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 PartyServicesBean connectingPartyInfo=(PartyServicesBean) listOfPartiesView.getItemAtPosition(position);
                 joinParty(connectingPartyInfo);
             }
-        });
+        });*/
 
     }
 
@@ -199,8 +201,6 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
             }
         });
 
-
-
     }
 
     public void joinParty(PartyServicesBean partyInfo){
@@ -274,8 +274,9 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                 {
                     try
                     {
-                        playMusic(cmdString[1], Long.parseLong(cmdString[2]),
-                                Integer.parseInt(cmdString[3]));
+                        Log.d(LOG_TAG,"Supposed to call play from here");
+                      /*  playMusic(cmdString[1], Long.parseLong(cmdString[2]),
+                                Integer.parseInt(cmdString[3]));*/
                     }
                     catch (NumberFormatException e)
                     {
@@ -300,14 +301,17 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
 
             case PartyMemberClient.CLIENT_CALLBACK:
                 clientThread = (PartyMemberClient) msg.obj;
-                Log.d(TAG, "Retrieved client thread.");
+                Log.d(TAG, "Retrieved client thread..Putting it in sharedbox");
+                SharedBox.setClient(clientThread);
                 break;
 
             case PartyMemberClient.PLAYLIST_RECEIVE:
                 Log.d(LOG_TAG,"Callback received, shud call activity");
                 ArrayList<MusicBean> musicInfo=(ArrayList<MusicBean>) msg.obj;
+                SharedBox.setThePlaylist(musicInfo);
+                //setupPartyHome();
                 Intent topartyHome=new Intent(this, PartyHome.class);
-                topartyHome.putExtra("musicinfo",musicInfo);
+                //topartyHome.putExtra("musicinfo",musicInfo);
                 startActivity(topartyHome);
                 break;
 
@@ -320,7 +324,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
         return true;
     }
 
-    private MediaPlayer mp=new MediaPlayer();
+   /* private MediaPlayer mp=new MediaPlayer();
     private AppTimer musicTimer = null;
 
 
@@ -358,11 +362,54 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
         }
         catch (IllegalStateException e)
         {
-            Log.e(TAG, "illeagalStateException");
+            Log.e(TAG, "illegalStateException");
         }
         catch (IOException e)
         {
             Log.e(TAG, "IOexception");
         }
     }
+*/
+  /*  public void setupPartyHome(){
+
+            findViewById(R.id.listOfParties).setVisibility(View.GONE);
+            findViewById(R.id.partysearchtext).setVisibility(View.GONE);
+            findViewById(R.id.partysearchprog).setVisibility(View.GONE);
+
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+            tabLayout.addTab(tabLayout.newTab().setText("Playlist"));
+            tabLayout.addTab(tabLayout.newTab().setText("Music Library"));
+            tabLayout.addTab(tabLayout.newTab().setText("Party Talk"));
+            tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+            final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+            final PartyHomeAdapter adapter = new PartyHomeAdapter(
+                    getFragmentManager(), tabLayout.getTabCount());
+            viewPager.setAdapter(adapter);
+            viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    viewPager.setCurrentItem(tab.getPosition());
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
+
+        alreadyRendered=true;
+    }*/
+
 }

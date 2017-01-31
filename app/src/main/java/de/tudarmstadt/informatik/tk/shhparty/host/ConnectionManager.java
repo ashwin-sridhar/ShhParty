@@ -22,11 +22,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
+import de.tudarmstadt.informatik.tk.shhparty.member.PartyHome;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.ConnectionTemplate;
 import de.tudarmstadt.informatik.tk.shhparty.R;
-import de.tudarmstadt.informatik.tk.shhparty.Utils.CommonUtils;
-import de.tudarmstadt.informatik.tk.shhparty.Utils.ConnectionUtils;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
+import de.tudarmstadt.informatik.tk.shhparty.utils.ConnectionUtils;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.WiFiDirectPulseChecker;
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.SimpleWebServer;
@@ -54,8 +55,8 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
     private static final String LOG_TAG="SHH_ConnMgr";
 
     private WifiP2pDnsSdServiceRequest serviceRequest;
-    private ArrayList<MusicBean> musicInfoParcel=new ArrayList<MusicBean>();
-
+   /* private ArrayList<MusicBean> musicInfoParcel=new ArrayList<MusicBean>();
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +65,10 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
 
         wwwroot = getApplicationContext().getFilesDir();
 
-        Intent receivedIntent=getIntent();
+        /*Intent receivedIntent=getIntent();
         musicInfoParcel=(ArrayList<MusicBean>) receivedIntent.getSerializableExtra("musicAndPlaylist");
         Log.d(LOG_TAG,"The parcel received from selectmusic"+musicInfoParcel.toString());
-
+*/
         wifiStatesIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         wifiStatesIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         wifiStatesIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
@@ -221,14 +222,17 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
             case PartyHostServer.SERVER_CALLBACK:
                 serverThread = (PartyHostServer) msg.obj;
                 Log.d(LOG_TAG, "Retrieved server thread.");
+                SharedBox.setServer(serverThread);
                 shareMusicAndPlaylist(serverThread);
                 break;
             case PartyHostServer.SERVER_SENTPLAYLIST:
-                Log.d(LOG_TAG,"Playlist is sent, transitioning to party home");
+                Log.d(LOG_TAG,"Playlist is sent, transitioning to party console");
+                Intent toPartyConsole=new Intent(this, PartyConsole.class);
+                startActivity(toPartyConsole);
                 break;
 
             default:
-                Log.d(LOG_TAG, "I thought we heard something? Message type: "
+                Log.d(LOG_TAG, "In default block: "
                         + msg.what);
                 break;
         }
@@ -252,8 +256,8 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
     }
 
     public void shareMusicAndPlaylist(PartyHostServer sThread){
-        Log.d(LOG_TAG,"Calling broadcast music on server thread"+musicInfoParcel.toString());
-        sThread.broadcastMusicInfo(musicInfoParcel);
+        Log.d(LOG_TAG,"Calling broadcast music on server thread, after getting the playlist from SharedBox");
+        sThread.broadcastMusicInfo(SharedBox.getThePlaylist());
     }
 }
 

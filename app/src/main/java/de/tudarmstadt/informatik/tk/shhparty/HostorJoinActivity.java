@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.View;
 
 import de.tudarmstadt.informatik.tk.shhparty.host.SelectSongsActivity;
+import de.tudarmstadt.informatik.tk.shhparty.member.PartyHome;
 import de.tudarmstadt.informatik.tk.shhparty.member.SearchForParties;
 import de.tudarmstadt.informatik.tk.shhparty.user.CreateProfile;
 

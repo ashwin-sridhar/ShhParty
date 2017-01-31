@@ -2,23 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@drawable/background_selector">
 
-    <CheckBox android:id="@+id/chkMusic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text=""
-        />
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:gravity="center_vertical"
         android:id="@+id/musicitem_track"
+        android:textColor="@color/red"
         android:textSize="14sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/musicitem_artist"
         android:textSize="12sp"
+        android:textColor="@color/red"
         android:gravity="center_vertical"/>
 </LinearLayout>

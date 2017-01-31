@@ -1,4 +1,4 @@
-package de.tudarmstadt.informatik.tk.shhparty.Utils;
+package de.tudarmstadt.informatik.tk.shhparty.utils;
 
 import android.content.Context;
 import android.os.Build;

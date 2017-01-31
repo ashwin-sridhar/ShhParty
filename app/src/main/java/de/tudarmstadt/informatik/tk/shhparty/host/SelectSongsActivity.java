@@ -3,7 +3,6 @@ package de.tudarmstadt.informatik.tk.shhparty.host;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,20 +10,20 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.jar.Manifest;
 
 import de.tudarmstadt.informatik.tk.shhparty.R;
-import de.tudarmstadt.informatik.tk.shhparty.Utils.ItemClickSupport;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
+import de.tudarmstadt.informatik.tk.shhparty.utils.ItemClickSupport;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicAdapter;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 
@@ -66,10 +65,12 @@ public class SelectSongsActivity extends Activity {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
                 Log.d(LOG_TAG,"Clicked!");
+                v.setSelected(true);
                 //MusicBean selectedMusic=musicAdapter.getItem(position);
                 MusicBean selectedMusic=musicInfoToShare.get(position);
                 selectedMusic.setInPlayist(true);
-                musicInfoToShare.add(selectedMusic);
+                //commenting to fix the duplicate entry problem in playlist
+               // musicInfoToShare.add(selectedMusic);
             }
         });
         musicRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -80,23 +81,24 @@ public class SelectSongsActivity extends Activity {
     }
 
     //Checks for READ permission, requests for it otherwise and fetches the music from the device
-    public void getMusicFromDevice(){
-
-        int hasReadStoragePermission=checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE);
-        if(hasReadStoragePermission!= PackageManager.PERMISSION_GRANTED){
-            if(shouldShowRequestPermissionRationale(android.Manifest.permission.READ_EXTERNAL_STORAGE)){
-                    showMessageOKCancel("You need to allow access to storage",
-                            new DialogInterface.OnClickListener(){
-                                @Override
-                                public void onClick(DialogInterface dialog,int which){
-                                    requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READEXTSTORAGE);
-                                }
-                            });
+    public void getMusicFromDevice() {
+        if(CommonUtils.isMarshMallow()){
+        int hasReadStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (hasReadStoragePermission != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showMessageOKCancel("You need to allow access to storage",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(getParent(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READEXTSTORAGE);
+                            }
+                        });
                 return;
             }
-                requestPermissions(new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READEXTSTORAGE);
-                return;
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_READEXTSTORAGE);
+            return;
 
+        }
         }
         ContentResolver musicResolver=getContentResolver();
         Uri musicUri= MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -120,6 +122,8 @@ public class SelectSongsActivity extends Activity {
             while (musicCursor.moveToNext());
         }
 
+        musicCursor.close();
+
 
     }
 
@@ -133,8 +137,13 @@ public class SelectSongsActivity extends Activity {
     }
 
     public void packMusicInfoAndTransition(View view){
+
+        SharedBox.setThePlaylist(musicInfoToShare);
+
         Intent toConnWorks=new Intent(this,ConnectionManager.class);
-        toConnWorks.putExtra("musicAndPlaylist",musicInfoToShare);
+
+        /*toConnWorks.putExtra("musicAndPlaylist",musicInfoToShare);*/
+
         startActivity(toConnWorks);
     }
 }

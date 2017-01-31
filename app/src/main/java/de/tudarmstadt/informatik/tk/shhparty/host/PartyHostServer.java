@@ -1,36 +1,26 @@
 package de.tudarmstadt.informatik.tk.shhparty.host;
 
-import android.net.wifi.p2p.WifiP2pInfo;
-import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
-import fi.iki.elonen.NanoHTTPD;
-import fi.iki.elonen.SimpleWebServer;
 
 /**
  * Created by Ashwin on 12/11/2016.
  */
 
-public class PartyHostServer extends Thread {
+public class PartyHostServer extends Thread implements Handler.Callback{
 
     private static final String AUDIO_FILE_LASTPATH = "sample.wav";
 
@@ -49,6 +39,7 @@ public class PartyHostServer extends Thread {
     // a hashmap of all client socket connections and their corresponding output
     // streams for writing
     private HashSet<Socket> connections;
+    private ArrayList<ObjectOutputStream> clientObjOutputStreams=new ArrayList<>();
 
     private boolean needReset = true;
     private Handler handler;
@@ -63,6 +54,8 @@ public class PartyHostServer extends Thread {
     public static final String PLAY_CMD = "PLAY";
     public static final String STOP_CMD = "STOP";
     public static final String SYNC_CMD = "SYNC";
+
+    private final Handler childHandler = new Handler(this);
 
 
 
@@ -80,9 +73,6 @@ public class PartyHostServer extends Thread {
         {
             try
             {
-                // let the UI thread control the server
-                handler.obtainMessage(SERVER_CALLBACK, this).sendToTarget();
-
                 // always check if the server socket is still ok to function
                 setupSocket();
 
@@ -94,6 +84,16 @@ public class PartyHostServer extends Thread {
                // syncClientTime(clientSocket);
 
                 connections.add(clientSocket);
+                clientObjOutputStreams.add(new ObjectOutputStream(clientSocket.getOutputStream()));
+                // Spawning child threads from here to listen to individual sockets
+                if(clientSocket!=null) {
+                    Log.d(LOG_TAG,"Code to receive votes begins");
+                    PartyHostListener singleListener = new PartyHostListener(childHandler, clientSocket);
+                    singleListener.start();
+                    handler.obtainMessage(SERVER_CALLBACK, this).sendToTarget();
+                }
+
+
             }
             catch (IOException e)
             {
@@ -367,41 +367,31 @@ public class PartyHostServer extends Thread {
             return;
         }
 
-        /*String command = PLAY_CMD + CMD_DELIMITER + fileName + CMD_DELIMITER
-                + String.valueOf(playTime) + CMD_DELIMITER
-                + String.valueOf(playPosition) + CMD_DELIMITER;*/
-
         Log.d(LOG_TAG, "Sending arraylist of music: " + musicInfoToShare.toString());
 
-        for (Socket s : connections)
+        for (ObjectOutputStream obj : clientObjOutputStreams)
         {
-            sendMusicAndList(s, musicInfoToShare);
+            sendMusicAndList(obj, musicInfoToShare);
         }
         handler.obtainMessage(SERVER_SENTPLAYLIST,this).sendToTarget();
     }
 
-    private void sendMusicAndList(Socket clientSocket, ArrayList<MusicBean> musicInfo){
+    private void sendMusicAndList(ObjectOutputStream toClientStream, ArrayList<MusicBean> musicInfo){
 
-        if (clientSocket == null)
+        if (toClientStream == null)
         {
-            return;
-        }
-
-        // automatically update the client connections, making sure the client
-        // sockets are always "fresh"
-        if (clientSocket.isClosed())
-        {
-            connections.remove(clientSocket);
-            clientSocket = null;
+            clientObjOutputStreams.remove(toClientStream);
             return;
         }
 
         try
         {
             // get the corresponding output stream from the socket
-            ObjectOutputStream objStream = new ObjectOutputStream(clientSocket.getOutputStream());
-
-            objStream.writeObject(musicInfo);
+          //  ObjectOutputStream objStream = new ObjectOutputStream(clientSocket.getOutputStream());
+           toClientStream.reset();
+            toClientStream.writeUnshared(musicInfo);
+            //toClientStream.writeObject(musicInfo);
+            toClientStream.flush();
             Log.d(LOG_TAG, "Object Sent: " + musicInfo.toString());
         }
         catch (IOException e)
@@ -410,16 +400,16 @@ public class PartyHostServer extends Thread {
             {
                 // this client socket is no longer valid, remove it from the
                 // list
-                clientSocket.close();
-                connections.remove(clientSocket);
-                clientSocket = null;
+                toClientStream.close();
+                clientObjOutputStreams.remove(toClientStream);
+                toClientStream = null;
             }
             catch (IOException e1)
             {
-                Log.e(LOG_TAG, "Cannot remove invalid client socket.");
+                Log.e(LOG_TAG, "Cannot remove invalid client output obj stream.");
             }
 
-            Log.e(LOG_TAG, "Cannot send object over to client: " + musicInfo.toString());
+          //  Log.e(LOG_TAG, "Cannot send object over to client: " + musicInfo.toString());
         }
     }
 
@@ -441,9 +431,16 @@ public class PartyHostServer extends Thread {
                 e.printStackTrace();
             }
         }
+        for(ObjectOutputStream obj:clientObjOutputStreams)
+            try {
+                obj.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         // empty the stored connection list
         connections = new HashSet<Socket>();
+        clientObjOutputStreams=new ArrayList<ObjectOutputStream>();
     }
 
     public void sendMusicAndPlaylist(){
@@ -475,4 +472,19 @@ public class PartyHostServer extends Thread {
         serverSocket = null;
     }
 
+    @Override
+    public boolean handleMessage(Message msg) {
+
+        switch(msg.what){
+            case PartyHostListener.PLAYLIST_UPDATED:
+                //broadcast the playlist
+                broadcastMusicInfo(SharedBox.getThePlaylist());
+                break;
+            default:
+                Log.d(LOG_TAG, "In default block: "
+                        + msg.what);
+                break;
+        }
+        return true;
+    }
 }

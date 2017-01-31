@@ -12,6 +12,7 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -49,12 +50,21 @@ public class PartyMemberClient extends Thread {
     public static final int CLIENT_CALLBACK = 101;
     public static final int PLAYLIST_RECEIVE=103;
 
+    InputStream iStream;
+    OutputStream oStream;
+    ObjectInputStream fromServerStream;
+    private ObjectOutputStream toServerStream;
+    private boolean streamsSetup=false;
+
     public PartyMemberClient(Handler handler, InetAddress groupOwnerAddress,
                                AppTimer timer)
     {
         this.handler = handler;
         this.mAddress = groupOwnerAddress;
         this.timer = timer;
+    }
+    public PartyMemberClient(){
+
     }
 
     @Override
@@ -72,23 +82,31 @@ public class PartyMemberClient extends Thread {
         {
             try
             {
-                InputStream iStream = socket.getInputStream();
-                OutputStream oStream = socket.getOutputStream();
+                if(!streamsSetup) {
+                    iStream = socket.getInputStream();
+                    oStream = socket.getOutputStream();
+                    toServerStream = new ObjectOutputStream(socket.getOutputStream());
+                    fromServerStream=new ObjectInputStream(iStream);
+                    streamsSetup=true;
+                }
 
-                ObjectInputStream objInStream=new ObjectInputStream(socket.getInputStream());
+              //  ObjectInputStream objInStream=new ObjectInputStream(socket.getInputStream());
                 ArrayList<MusicBean> receivedMusicInfo=new ArrayList<MusicBean>();
                 try {
-                    receivedMusicInfo=(ArrayList<MusicBean>) objInStream.readObject();
+                    Object receivedObj=fromServerStream.readObject();
+                    Log.d(LOG_TAG,"Received obj is"+receivedObj.getClass().getName());
+                   if(receivedObj instanceof ArrayList<?>){
+                       receivedMusicInfo=(ArrayList<MusicBean>)receivedObj;
+                   }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                   if(!receivedMusicInfo.isEmpty()){
-                        Log.d(LOG_TAG,"yes! received something!");
-                        handler.obtainMessage(PLAYLIST_RECEIVE,receivedMusicInfo).sendToTarget();
-                    }
+                if(!receivedMusicInfo.isEmpty()){
+                    Log.d(LOG_TAG,"yes! received something!");
+                    handler.obtainMessage(PLAYLIST_RECEIVE,receivedMusicInfo).sendToTarget();
+                }
 
-
-                // clear the buffer before reading
+               // clear the buffer before reading
                 byte[] buffer = new byte[BUFFER_SIZE];
                 int bytes;
 
@@ -145,6 +163,85 @@ public class PartyMemberClient extends Thread {
             }
         }
     }
+
+    public void sendVote(MusicBean music){
+
+        if (socket == null)
+        {
+            return;
+        }
+
+        // automatically update the client connections, making sure the client
+        // sockets are always "fresh"
+        if (socket.isClosed())
+        {
+            socket = null;
+            return;
+        }
+
+        try
+        {
+            // get the corresponding output stream from the socket
+            toServerStream.reset();
+            toServerStream.writeUnshared(music);
+            toServerStream.flush();
+            Log.d(LOG_TAG, "Object Sent for vote: " + music.toString());
+        }
+        catch (IOException e)
+        {
+            try
+            {
+                // this client socket is no longer valid, remove it from the
+                // list
+                socket.close();
+                socket = null;
+            }
+            catch (IOException e1)
+            {
+                Log.e(LOG_TAG, "Vote-Cannot remove invalid server socket.");
+            }
+
+            Log.e(LOG_TAG, "Vote-Cannot send object over to server: " + music.toString());
+        }
+    }
+
+    public void sendRequestToAddSongs(ArrayList<String> musicIDs){
+        if (socket == null)
+        {
+            return;
+        }
+        if (socket.isClosed())
+        {
+            socket = null;
+            return;
+        }
+        try
+        {
+            // get the corresponding output stream from the socket
+            toServerStream.reset();
+            toServerStream.writeUnshared(musicIDs);
+            toServerStream.flush();
+            Log.d(LOG_TAG, "Object Sent for addtoplaylist: " + musicIDs.toString());
+        }
+        catch (IOException e)
+        {
+            try
+            {
+                // this client socket is no longer valid, remove it from the
+                // list
+                socket.close();
+                socket = null;
+            }
+            catch (IOException e1)
+            {
+                Log.e(LOG_TAG, "addtopl-Cannot remove invalid server socket.");
+            }
+
+            Log.e(LOG_TAG, "addtopl-Cannot send object over to server: " + musicIDs.toString());
+        }
+
+    }
+
 
     public void connect()
     {

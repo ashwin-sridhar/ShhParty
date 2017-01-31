@@ -1,8 +1,9 @@
-package de.tudarmstadt.informatik.tk.shhparty.Utils;
+package de.tudarmstadt.informatik.tk.shhparty.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,5 +77,9 @@ public class CommonUtils {
         }
         in.close();
         out.close();
+    }
+
+    public static boolean isMarshMallow(){
+        return (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M);
     }
 }
