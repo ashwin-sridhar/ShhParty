@@ -13,6 +13,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatMessage;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommandBean;
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 
@@ -32,6 +34,7 @@ public class PartyHostServer extends Thread implements Handler.Callback{
 
     public static final int SERVER_CALLBACK = 103;
     public static final int SERVER_SENTPLAYLIST=104;
+    public static final int SERVER_CHATBROADCASTED=120;
 
     // use a 10 second time out to receive an ack message
     public static final int ACK_TIMEOUT = 10000;
@@ -78,7 +81,7 @@ public class PartyHostServer extends Thread implements Handler.Callback{
 
                 // A blocking operation to accept incoming client connections
                 Socket clientSocket = serverSocket.accept();
-                Log.d(LOG_TAG, "Accepted another client");
+                Log.d(LOG_TAG, "Accepted a client");
 
                 // TODO: convert this to an asynchronous method call later
                // syncClientTime(clientSocket);
@@ -413,6 +416,115 @@ public class PartyHostServer extends Thread implements Handler.Callback{
         }
     }
 
+    public void broadcastChatMessage(ChatMessage messageToShare)
+    {
+        if (messageToShare==null)
+        {
+            return;
+        }
+
+        Log.d(LOG_TAG, "Broadcasting chat message: " + messageToShare.toString());
+
+        for (ObjectOutputStream obj : clientObjOutputStreams)
+        {
+            sendChatMessage(obj, messageToShare);
+        }
+        handler.obtainMessage(SERVER_CHATBROADCASTED,this).sendToTarget();
+    }
+    private void sendChatMessage(ObjectOutputStream toClientStream, ChatMessage messageToSend){
+
+        if (toClientStream == null)
+        {
+            clientObjOutputStreams.remove(toClientStream);
+            return;
+        }
+
+        try
+        {
+            // get the corresponding output stream from the socket
+            //  ObjectOutputStream objStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            if(messageToSend!=null) {
+                toClientStream.reset();
+                toClientStream.writeUnshared(messageToSend);
+                //toClientStream.writeObject(musicInfo);
+                toClientStream.flush();
+                Log.d(LOG_TAG, "Chat message Sent: " + messageToSend.toString());
+            }
+        }
+        catch (IOException e)
+        {
+            try
+            {
+                // this client socket is no longer valid, remove it from the
+                // list
+                toClientStream.close();
+                clientObjOutputStreams.remove(toClientStream);
+                toClientStream = null;
+            }
+            catch (IOException e1)
+            {
+                Log.e(LOG_TAG, "Cannot remove invalid client output obj stream.");
+            }
+
+            //  Log.e(LOG_TAG, "Cannot send object over to client: " + musicInfo.toString());
+        }
+    }
+    public void broadcastCommandMessage(CommandBean commandToShare)
+    {
+        if (commandToShare==null)
+        {
+            return;
+        }
+
+        Log.d(LOG_TAG, "Broadcasting chat message: " + commandToShare.toString());
+
+        for (ObjectOutputStream obj : clientObjOutputStreams)
+        {
+            sendCommandBean(obj, commandToShare);
+        }
+       // handler.obtainMessage(SERVER_CHATBROADCASTED,this).sendToTarget();
+    }
+
+    private void sendCommandBean(ObjectOutputStream toClientStream, CommandBean commandToSend){
+
+        if (toClientStream == null)
+        {
+            clientObjOutputStreams.remove(toClientStream);
+            return;
+        }
+
+        try
+        {
+            // get the corresponding output stream from the socket
+            //  ObjectOutputStream objStream = new ObjectOutputStream(clientSocket.getOutputStream());
+            if(commandToSend!=null) {
+                toClientStream.reset();
+                toClientStream.writeUnshared(commandToSend);
+                //toClientStream.writeObject(musicInfo);
+                toClientStream.flush();
+                Log.d(LOG_TAG, "Chat message Sent: " + commandToSend.toString());
+            }
+        }
+        catch (IOException e)
+        {
+            try
+            {
+                // this client socket is no longer valid, remove it from the
+                // list
+                toClientStream.close();
+                clientObjOutputStreams.remove(toClientStream);
+                toClientStream = null;
+            }
+            catch (IOException e1)
+            {
+                Log.e(LOG_TAG, "Cannot remove invalid client output obj stream.");
+            }
+
+            //  Log.e(LOG_TAG, "Cannot send object over to client: " + musicInfo.toString());
+        }
+    }
+
+
     public void disconnectClients()
     {
         // close all client socket connections
@@ -441,6 +553,10 @@ public class PartyHostServer extends Thread implements Handler.Callback{
         // empty the stored connection list
         connections = new HashSet<Socket>();
         clientObjOutputStreams=new ArrayList<ObjectOutputStream>();
+    }
+
+    public void kickoutOneMember(){
+
     }
 
     public void sendMusicAndPlaylist(){
@@ -479,6 +595,13 @@ public class PartyHostServer extends Thread implements Handler.Callback{
             case PartyHostListener.PLAYLIST_UPDATED:
                 //broadcast the playlist
                 broadcastMusicInfo(SharedBox.getThePlaylist());
+                break;
+            case PartyHostListener.CHATBOX_UPDATED:
+                broadcastChatMessage(SharedBox.getMessage());
+                break;
+            case PartyHostListener.MEMBERDATA_RECEIVED:
+                handler.obtainMessage(PartyHostListener.MEMBERDATA_RECEIVED).sendToTarget();
+                Log.d(LOG_TAG,"Asked ConnectionManager to take care of member list updation");
                 break;
             default:
                 Log.d(LOG_TAG, "In default block: "

@@ -22,8 +22,11 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 import de.tudarmstadt.informatik.tk.shhparty.AppTimer;
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatMessage;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommandBean;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 
 /**
  * Created by Ashwin on 12/11/2016.
@@ -49,6 +52,9 @@ public class PartyMemberClient extends Thread {
     public static final int EVENT_RECEIVE_MSG = 100;
     public static final int CLIENT_CALLBACK = 101;
     public static final int PLAYLIST_RECEIVE=103;
+
+    public static final int CHATMESSAGE_RECEIVE=111;
+    public static final int COMMAND_RECEIVED=150;
 
     InputStream iStream;
     OutputStream oStream;
@@ -92,11 +98,28 @@ public class PartyMemberClient extends Thread {
 
               //  ObjectInputStream objInStream=new ObjectInputStream(socket.getInputStream());
                 ArrayList<MusicBean> receivedMusicInfo=new ArrayList<MusicBean>();
+                ChatMessage receivedMessage;
                 try {
-                    Object receivedObj=fromServerStream.readObject();
+
+                    Object receivedObj=fromServerStream.readUnshared();
+
+
                     Log.d(LOG_TAG,"Received obj is"+receivedObj.getClass().getName());
                    if(receivedObj instanceof ArrayList<?>){
                        receivedMusicInfo=(ArrayList<MusicBean>)receivedObj;
+                   }
+                    else if(receivedObj instanceof ChatMessage){
+                       receivedMessage=(ChatMessage) receivedObj;
+                       if(receivedMessage!=null){
+                           SharedBox.setMessage(receivedMessage);
+                           handler.obtainMessage(CHATMESSAGE_RECEIVE).sendToTarget();
+                       }
+                   }
+                    else if(receivedObj instanceof CommandBean){
+                       if(receivedObj!=null) {
+                           SharedBox.setReceivedCommand((CommandBean) receivedObj);
+                           handler.obtainMessage(COMMAND_RECEIVED).sendToTarget();
+                       }
                    }
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
@@ -111,11 +134,11 @@ public class PartyMemberClient extends Thread {
                 int bytes;
 
                 // Read from the InputStream
-                bytes = iStream.read(buffer);
+               /* bytes = iStream.read(buffer);
                 if (bytes == -1)
                 {
                     continue;
-                }
+                }*/
 
                 // need to handle sync messages
                 String recMsg = new String(buffer);
@@ -205,7 +228,7 @@ public class PartyMemberClient extends Thread {
         }
     }
 
-    public void sendRequestToAddSongs(ArrayList<String> musicIDs){
+    public void sendRequestToAddSongs(ArrayList<MusicBean> musicbeans){
         if (socket == null)
         {
             return;
@@ -219,9 +242,9 @@ public class PartyMemberClient extends Thread {
         {
             // get the corresponding output stream from the socket
             toServerStream.reset();
-            toServerStream.writeUnshared(musicIDs);
+            toServerStream.writeUnshared(musicbeans);
             toServerStream.flush();
-            Log.d(LOG_TAG, "Object Sent for addtoplaylist: " + musicIDs.toString());
+            Log.d(LOG_TAG, "Object Sent for addtoplaylist: " + musicbeans.toString());
         }
         catch (IOException e)
         {
@@ -237,10 +260,93 @@ public class PartyMemberClient extends Thread {
                 Log.e(LOG_TAG, "addtopl-Cannot remove invalid server socket.");
             }
 
-            Log.e(LOG_TAG, "addtopl-Cannot send object over to server: " + musicIDs.toString());
+            Log.e(LOG_TAG, "addtopl-Cannot send object over to server: " + musicbeans.toString());
         }
 
     }
+
+    public void sendChatMessage(ChatMessage message){
+
+        if (socket == null)
+        {
+            return;
+        }
+
+        // automatically update the client connections, making sure the client
+        // sockets are always "fresh"
+        if (socket.isClosed())
+        {
+            socket = null;
+            return;
+        }
+
+        try
+        {
+            // get the corresponding output stream from the socket
+            toServerStream.reset();
+            toServerStream.writeUnshared(message);
+            toServerStream.flush();
+            Log.d(LOG_TAG, "Chatmessage Sent to server: " + message.toString());
+        }
+        catch (IOException e)
+        {
+            try
+            {
+                // this client socket is no longer valid, remove it from the
+                // list
+                socket.close();
+                socket = null;
+            }
+            catch (IOException e1)
+            {
+                Log.e(LOG_TAG, "Chatmessage send-Cannot remove invalid server socket.");
+            }
+
+            Log.e(LOG_TAG, "Cannot send chat message over to server: " + message.toString());
+        }
+    }
+
+    public void sendMyProfileData(MemberBean member){
+
+        if (socket == null)
+        {
+            return;
+        }
+
+        // automatically update the client connections, making sure the client
+        // sockets are always "fresh"
+        if (socket.isClosed())
+        {
+            socket = null;
+            return;
+        }
+
+        try
+        {
+            // get the corresponding output stream from the socket
+            toServerStream.reset();
+            toServerStream.writeUnshared(member);
+            toServerStream.flush();
+            Log.d(LOG_TAG, "Profile data Sent to server: " + member.toString());
+        }
+        catch (IOException e)
+        {
+            try
+            {
+                // this client socket is no longer valid, remove it from the
+                // list
+                socket.close();
+                socket = null;
+            }
+            catch (IOException e1)
+            {
+                Log.e(LOG_TAG, "Chatmessage send-Cannot remove invalid server socket.");
+            }
+
+            Log.e(LOG_TAG, "Cannot send profile data over to server: " + member.toString());
+        }
+    }
+
 
 
     public void connect()

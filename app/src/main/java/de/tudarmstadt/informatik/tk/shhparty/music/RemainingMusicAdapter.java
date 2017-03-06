@@ -66,6 +66,14 @@ public class RemainingMusicAdapter extends RecyclerView.Adapter<RemainingMusicAd
 
     }
 
+    public void updatePlaylistData(ArrayList<MusicBean> refreshedPlaylist){
+        // this.songs=refreshedPlaylist;
+        listOfMusic.clear();
+        listOfMusic.addAll(refreshedPlaylist);
+        notifyDataSetChanged();
+
+    }
+
     @Override
     public int getItemCount()
     {

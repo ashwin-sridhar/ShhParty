@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".member.PartyHome">
+    tools:context=".host.PartyConsole">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/consoletoolbar"
@@ -28,10 +28,84 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
+
+    <TextView android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/textView"
+        android:background="?attr/colorControlHighlight" />
+
+
+    <TextView
+        android:text="songname"
+        android:layout_height="50dp"
+        android:layout_alignTop="@id/textView"
+        android:id="@+id/songname"
+        android:textAppearance="@android:style/TextAppearance.Widget.Button"
+        android:textSize="30sp"
+        android:typeface="serif"
+        android:layout_width="180dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="false"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp" />
+
+
+
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_alignTop="@id/textView"
+        android:layout_marginEnd="130dp"
+        android:id="@+id/playbutton"
+        android:background="@android:drawable/ic_media_play"
+        android:visibility="visible"
+        android:backgroundTint="@android:color/background_dark"
+        android:layout_alignBottom="@+id/consolepager"
+        android:onClick="onPlay"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="60dp"
+        android:layout_alignTop="@id/textView"
+        android:layout_marginEnd="130dp"
+        android:id="@+id/pausebutton"
+        android:background="@android:drawable/ic_media_pause"
+        android:visibility="invisible"
+        android:backgroundTint="@android:color/background_dark"
+        android:layout_alignBottom="@+id/consolepager"
+        android:onClick="onPause"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content" />
+
+
+
+
+    <Button
+
+        android:id="@+id/stopbutton"
+        android:background="@android:drawable/alert_light_frame"
+
+        android:backgroundTint="@android:color/background_dark"
+        android:visibility="visible"
+        android:onClick="onStop"
+        android:layout_alignParentEnd="true"
+        android:layout_alignBottom="@+id/consolepager"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="60dp"
+        android:elevation="0dp"
+        android:layout_margin="-10dp"
+        android:layout_marginBottom="-3dp" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/consolepager"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/consoletab_layout"/>
+        android:layout_below="@+id/consoletoolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp" />
+    />
 
 </RelativeLayout>

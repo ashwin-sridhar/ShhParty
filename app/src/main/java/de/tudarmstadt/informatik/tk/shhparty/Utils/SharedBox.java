@@ -1,8 +1,11 @@
 package de.tudarmstadt.informatik.tk.shhparty.utils;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatMessage;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
+import de.tudarmstadt.informatik.tk.shhparty.member.MemberBean;
 import de.tudarmstadt.informatik.tk.shhparty.member.PartyMemberClient;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 
@@ -42,4 +45,66 @@ public class SharedBox {
     public static PartyMemberClient getClient() {
         return client;
     }
+
+    public static ChatMessage message;
+    public static ChatMessage getMessage() {
+        return message;
+    }
+
+    public static void setMessage(ChatMessage message) {
+        SharedBox.message = message;
+    }
+
+    public static ArrayList<MemberBean> getListOfMembers() {
+        return listOfMembers;
+    }
+
+    public static void setListOfMembers(ArrayList<MemberBean> listOfMembers) {
+        SharedBox.listOfMembers = listOfMembers;
+    }
+
+    public static ArrayList<MemberBean> listOfMembers=new ArrayList<MemberBean>();
+
+    public static MemberBean getMyProfileBean() {
+        return myProfileBean;
+    }
+
+    public static void setMyProfileBean(MemberBean myProfileBean) {
+        SharedBox.myProfileBean = myProfileBean;
+    }
+
+    public static MemberBean myProfileBean;
+
+    public static File getWwwroot() {
+        return wwwroot;
+    }
+
+    public static void setWwwroot(File wwwroot) {
+        SharedBox.wwwroot = wwwroot;
+    }
+
+    public static String getHttpHostIP() {
+        return httpHostIP;
+    }
+
+    public static void setHttpHostIP(String httpHostIP) {
+        SharedBox.httpHostIP = httpHostIP;
+    }
+
+    public static File wwwroot;
+    public static String httpHostIP;
+
+    public static CommandBean getReceivedCommand() {
+        return receivedCommand;
+    }
+
+    public static void setReceivedCommand(CommandBean receivedCommand) {
+        SharedBox.receivedCommand = receivedCommand;
+    }
+
+    public static CommandBean receivedCommand;
+
+
+
+
 }

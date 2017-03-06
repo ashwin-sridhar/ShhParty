@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,6 +14,13 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigInteger;
 import java.nio.ByteOrder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 
 /**
  * Created by Ashwin on 12/2/2016.
@@ -82,4 +90,49 @@ public class CommonUtils {
     public static boolean isMarshMallow(){
         return (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M);
     }
+
+    //Preneesh's part begins
+
+    private static DateFormat dateFormat = new SimpleDateFormat("d MMM yyyy");
+    private static DateFormat timeFormat = new SimpleDateFormat("K:mma");
+
+
+    public static String getCurrentTime() {
+
+        Date today = Calendar.getInstance().getTime();
+        return timeFormat.format(today);
+    }
+
+    public static String getCurrentDate() {
+
+        Date today = Calendar.getInstance().getTime();
+        return dateFormat.format(today);
+    }
+
+    //Preneesh's part ends
+
+    public static ArrayList<MusicBean> derivePlaylist(){
+        ArrayList<MusicBean> allSongs = new ArrayList<MusicBean>();
+        ArrayList<MusicBean> playlist = new ArrayList<MusicBean>();
+        allSongs=SharedBox.getThePlaylist();
+        for(int i=0;i<allSongs.size();i++){
+            if(allSongs.get(i).isInPlayist())
+                playlist.add(allSongs.get(i));
+        }
+        return playlist;
+    }
+
+    public static ArrayList<MusicBean> deriveRemainingSongs(){
+        ArrayList<MusicBean> allSongs = new ArrayList<MusicBean>();
+        ArrayList<MusicBean> remainingSongs = new ArrayList<MusicBean>();
+
+        allSongs=SharedBox.getThePlaylist();
+        for(int i=0;i<allSongs.size();i++){
+            if(!(allSongs.get(i).isInPlayist()))
+                remainingSongs.add(allSongs.get(i));
+        }
+        return remainingSongs;
+    }
+
+
 }

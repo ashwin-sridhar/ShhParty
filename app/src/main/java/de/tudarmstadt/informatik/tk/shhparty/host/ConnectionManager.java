@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.tudarmstadt.informatik.tk.shhparty.SongRecyclerAdapter;
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatAdapter;
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatFragment;
 import de.tudarmstadt.informatik.tk.shhparty.member.PartyHome;
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.ConnectionTemplate;
@@ -55,8 +58,9 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
     private static final String LOG_TAG="SHH_ConnMgr";
 
     private WifiP2pDnsSdServiceRequest serviceRequest;
-   /* private ArrayList<MusicBean> musicInfoParcel=new ArrayList<MusicBean>();
-*/
+
+    private boolean alreadyRendered=false;
+    private boolean clearedOldServices=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +81,7 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
         p2pManager= (WifiP2pManager) getSystemService(Context.WIFI_P2P_SERVICE);
         channel=p2pManager.initialize(this,getMainLooper(),null);
 
+        // TODO: 3/2/2017 Make this also an AsyncTask 
         //advertise the service
         spreadWordAboutService();
 
@@ -109,25 +114,27 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
         unregisterReceiver(p2ppulsechecker);
     }
 
-    public void spreadWordAboutService(){
-        Map<String,String> partyServiceData=new HashMap<String,String>();
-        partyServiceData.put("partyhost","Ashwin");
-        partyServiceData.put("devicestatus","available");
+    public void spreadWordAboutService() {
+        Map<String, String> partyServiceData = new HashMap<String, String>();
+        partyServiceData.put("partyhost", "Ashwin");
+        partyServiceData.put("devicestatus", "available");
         partyServiceData.put("portnumber", String.valueOf(ConnectionUtils.getPort(ConnectionManager.this)));
         partyServiceData.put("wifiip", CommonUtils.getWiFiIPAddress(ConnectionManager.this));
-        WifiP2pDnsSdServiceInfo partyServiceInfo=WifiP2pDnsSdServiceInfo.newInstance("_shhpartymusic","_shhparty._tcp",partyServiceData);
-        p2pManager.addLocalService(channel, partyServiceInfo, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
+        WifiP2pDnsSdServiceInfo partyServiceInfo = WifiP2pDnsSdServiceInfo.newInstance("_shhpartymusic", "_shhparty._tcp", partyServiceData);
+      
+      
+            p2pManager.addLocalService(channel, partyServiceInfo, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
 
-                Log.d(LOG_TAG,"Advertising service sucess!");
-            }
+                    Log.d(LOG_TAG, "Advertising service sucess!");
+                }
 
-            @Override
-            public void onFailure(int reason) {
-                Log.d(LOG_TAG,"Advertising service failed!Reason code is"+reason);
-            }
-        });
+                @Override
+                public void onFailure(int reason) {
+                    Log.d(LOG_TAG, "Advertising service failed!Reason code is" + reason);
+                }
+            });
 
         /*have to discover services to be discoverable
          * not doing anything after discovering really */
@@ -138,6 +145,7 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                     public void onSuccess() {
                         //Nothing done as of now
                     }
+
                     @Override
                     public void onFailure(int arg0) {
                         //nothing done as of now
@@ -148,12 +156,12 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
             @Override
             public void onSuccess() {
 
-                Log.d(LOG_TAG,"Discovery initiated successfully..");
+                Log.d(LOG_TAG, "Discovery initiated successfully..");
             }
 
             @Override
             public void onFailure(int arg0) {
-                Log.d(LOG_TAG,"Discovery initiation failed-reason code is:"+arg0);
+                Log.d(LOG_TAG, "Discovery initiation failed-reason code is:" + arg0);
 
             }
         });
@@ -183,6 +191,9 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                                     .getHostAddress();
 
                             boolean quiet = false;
+
+                            SharedBox.setHttpHostIP(httpHostIP);
+                            SharedBox.setWwwroot(wwwroot);
 
                             httpServer = new SimpleWebServer(httpHostIP,
                                     HTTP_PORT, wwwroot, quiet);
@@ -227,8 +238,25 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                 break;
             case PartyHostServer.SERVER_SENTPLAYLIST:
                 Log.d(LOG_TAG,"Playlist is sent, transitioning to party console");
-                Intent toPartyConsole=new Intent(this, PartyConsole.class);
-                startActivity(toPartyConsole);
+                if(!alreadyRendered) {
+                    Intent toPartyConsole = new Intent(this, PartyConsole.class);
+                    startActivity(toPartyConsole);
+                    alreadyRendered=true;
+                }else{
+                    //update the recycler view alone
+                    SongRecyclerAdapter thePlaylistAdapter=(SongRecyclerAdapter) HostPlaylistFragment.rv.getAdapter();
+                    thePlaylistAdapter.updatePlaylistData(CommonUtils.derivePlaylist());
+                }
+                break;
+            case PartyHostServer.SERVER_CHATBROADCASTED:
+                Log.d(LOG_TAG,"Chat message is broadcast,updating chat UI");
+                ChatFragment.chatlist.add(SharedBox.getMessage());
+                ChatFragment.chatAdapter.notifyDataSetChanged();
+
+                break;
+            case PartyHostListener.MEMBERDATA_RECEIVED:
+                MemberListAdapter memListAdapter=(MemberListAdapter) MembersListFragment.rv.getAdapter();
+                memListAdapter.updateMemberList(SharedBox.getListOfMembers());
                 break;
 
             default:
@@ -239,7 +267,7 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
         return true;
     }
 
-    public void makePlayCall(PartyHostServer sThread){
+   /* public static void makePlayCall(PartyHostServer sThread){
         //Copy file to www method call
         File localMusic= new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/sample.wav");
         File webFile = new File(wwwroot,localMusic.getName());
@@ -253,12 +281,13 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                 + String.valueOf(HTTP_PORT) + "/" + webFile.getName());
         Log.d(LOG_TAG,"WEB MUSIC URI:"+webMusicURI.toString());
         sThread.sendPlay(webMusicURI.toString(), 0, 0);
-    }
+    }*/
 
     public void shareMusicAndPlaylist(PartyHostServer sThread){
         Log.d(LOG_TAG,"Calling broadcast music on server thread, after getting the playlist from SharedBox");
         sThread.broadcastMusicInfo(SharedBox.getThePlaylist());
     }
+
 }
 
 

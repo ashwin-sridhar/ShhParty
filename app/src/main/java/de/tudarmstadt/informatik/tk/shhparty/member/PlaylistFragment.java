@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.app.Fragment;
@@ -9,23 +10,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
 
 import de.tudarmstadt.informatik.tk.shhparty.R;
 import de.tudarmstadt.informatik.tk.shhparty.SongRecyclerAdapter;
-import de.tudarmstadt.informatik.tk.shhparty.member.PartyHome;
+import de.tudarmstadt.informatik.tk.shhparty.sensing.ActivityRecognizedService;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
 import de.tudarmstadt.informatik.tk.shhparty.utils.ItemClickSupport;
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
-import de.tudarmstadt.informatik.tk.shhparty.member.PartyMemberClient;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
 
 public class PlaylistFragment extends Fragment {
     private static final String LOG_TAG="Shh_plfragment";
-    private ArrayList<MusicBean> allSongs=new ArrayList<MusicBean>();
+    private static ArrayList<MusicBean> allSongs=new ArrayList<MusicBean>();
     private ArrayList<String> votedSongs=new ArrayList<String>();
-
+    public static RecyclerView rv;
+    public static  SongRecyclerAdapter songAdapter;
     @Nullable
 
     @Override
@@ -33,12 +36,11 @@ public class PlaylistFragment extends Fragment {
 
         View rootView=inflater.inflate(R.layout.fragment_playlist,null);
 
-        allSongs=getPlaylistSongs();
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.mRecyclerCrime);
+        allSongs= CommonUtils.derivePlaylist();
+        rv = (RecyclerView) rootView.findViewById(R.id.mRecyclerCrime);
         rv.setLayoutManager(new LinearLayoutManager(this.getActivity()));
-        SongRecyclerAdapter songAdapter=new SongRecyclerAdapter(this.getActivity(),allSongs);
+       songAdapter=new SongRecyclerAdapter(this.getActivity(),allSongs);
         rv.setAdapter(songAdapter);
-        PartyHome partyHome=(PartyHome)getActivity();
 
         final PartyMemberClient  client= SharedBox.getClient();
 
@@ -50,11 +52,15 @@ public class PlaylistFragment extends Fragment {
                 Log.d(LOG_TAG,"Clicked!");
                 MusicBean selectedMusic=allSongs.get(position);
                 votedSongs.add(Long.toString(selectedMusic.getMusicID()));
-
-                int voteCount=selectedMusic.getVotes();
-                voteCount++;
-                selectedMusic.setVotes(voteCount);
-                client.sendVote(selectedMusic);
+                if(ActivityRecognizedService.dancing) {
+                    int voteCount = selectedMusic.getVotes();
+                    voteCount++;
+                    selectedMusic.setVotes(voteCount);
+                    //Sending vote as AsyncTask
+                    new SendVoteToHost().execute(selectedMusic);
+                }else{
+                    Toast.makeText(getActivity(), "You need to DANCE to be able to vote!", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
@@ -63,7 +69,7 @@ public class PlaylistFragment extends Fragment {
     }
 
 
-  private ArrayList<MusicBean> getPlaylistSongs()
+/*  private ArrayList<MusicBean> getPlaylistSongs()
   {
       ArrayList<MusicBean> allSongs = new ArrayList<MusicBean>();
       ArrayList<MusicBean> playlist = new ArrayList<MusicBean>();
@@ -73,9 +79,20 @@ public class PlaylistFragment extends Fragment {
             playlist.add(allSongs.get(i));
       }
     return playlist;
-  }
+  }*/
 
   public String toString() {
     return "Playlist";
   }
+
+
+
+private class SendVoteToHost extends AsyncTask<MusicBean,Integer,String>{
+
+    @Override
+    protected String doInBackground(MusicBean... musicBean) {
+        SharedBox.getClient().sendVote(musicBean[0]);
+        return "Sent my vote";
+    }
+}
 }

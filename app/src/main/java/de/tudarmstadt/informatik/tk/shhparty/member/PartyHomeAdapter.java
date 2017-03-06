@@ -5,7 +5,7 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
 
-import de.tudarmstadt.informatik.tk.shhparty.ChatFragment;
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatFragment;
 
 /**
  * Created by Ashwin on 1/7/2017.

@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -21,6 +22,11 @@ import java.util.List;
 import java.util.Map;
 
 import de.tudarmstadt.informatik.tk.shhparty.AppTimer;
+import de.tudarmstadt.informatik.tk.shhparty.SongRecyclerAdapter;
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatAdapter;
+import de.tudarmstadt.informatik.tk.shhparty.chat.ChatFragment;
+import de.tudarmstadt.informatik.tk.shhparty.music.RemainingMusicAdapter;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
@@ -136,7 +142,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                         // A service has been discovered. Is this our app?
                         Log.d(LOG_TAG,"Found a service, Is it ours?");
                         if (instanceName.equalsIgnoreCase(SERVICE_INSTANCE)) {
-
+                                //Future code for multiple party events
                                 //List the party events in the UI
                                 //ListView partyListToUpdate=listOfPartiesView;
                                 //PartyListAdapter adapter= (PartyListAdapter) listOfPartiesView.getAdapter();
@@ -170,6 +176,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
 
         // After attaching listeners, create a service request and initiate
         // discovery.
+
         serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
         p2pManager.addServiceRequest(channel, serviceRequest,
                 new WifiP2pManager.ActionListener() {
@@ -309,11 +316,32 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                 Log.d(LOG_TAG,"Callback received, shud call activity");
                 ArrayList<MusicBean> musicInfo=(ArrayList<MusicBean>) msg.obj;
                 SharedBox.setThePlaylist(musicInfo);
-                //setupPartyHome();
-                Intent topartyHome=new Intent(this, PartyHome.class);
-                //topartyHome.putExtra("musicinfo",musicInfo);
-                startActivity(topartyHome);
+                    if(!alreadyRendered) {
+                        Intent topartyHome = new Intent(this, PartyHome.class);
+                        startActivity(topartyHome);
+                        alreadyRendered = true;
+                    }else{
+                        SongRecyclerAdapter plAdapter=(SongRecyclerAdapter) PlaylistFragment.rv.getAdapter();
+                        plAdapter.updatePlaylistData(CommonUtils.derivePlaylist());
+                        RemainingMusicAdapter rmAdapter= (RemainingMusicAdapter) MusicLibrary.rv.getAdapter();
+                        rmAdapter.updatePlaylistData(CommonUtils.deriveRemainingSongs());
+
+                    }
+
                 break;
+            case PartyMemberClient.CHATMESSAGE_RECEIVE:
+                Log.d(LOG_TAG,"Callback received, received chat message");
+               // Intent newMessage=new Intent(this, PartyHome.class);
+               // Fragment chatFrag=getFragmentManager().findFragmentById(R.id.chatFragment);
+               // getFragmentManager().beginTransaction().detach(chatFrag).attach(chatFrag).commit();
+                ChatFragment.chatlist.add(SharedBox.getMessage());
+                ChatFragment.chatAdapter.notifyDataSetChanged();
+
+                break;
+              //  startActivity(newMessage);
+            case PartyMemberClient.COMMAND_RECEIVED:
+                Log.d(LOG_TAG,"Callback received, got a command");
+                // TODO: 3/6/2017 Bind to musicremote service and start onplay also 
 
 
             default:
@@ -324,7 +352,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
         return true;
     }
 
-   /* private MediaPlayer mp=new MediaPlayer();
+ /*  private MediaPlayer mp=new MediaPlayer();
     private AppTimer musicTimer = null;
 
 
@@ -368,8 +396,8 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
         {
             Log.e(TAG, "IOexception");
         }
-    }
-*/
+    }*/
+
   /*  public void setupPartyHome(){
 
             findViewById(R.id.listOfParties).setVisibility(View.GONE);

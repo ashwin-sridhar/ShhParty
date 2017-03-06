@@ -26,6 +26,12 @@ public class HostorJoinActivity extends Activity {
     }
     public void goToCreateUserProfile(View view){
         Intent goToUserProfileIntent=new Intent(this, CreateProfile.class);
+        if(view.getTag()!=null){
+            if (view.getTag().toString().equals("search")) {
+                goToUserProfileIntent.putExtra("role", "member");
+            }
+        }
+
         startActivity(goToUserProfileIntent);
     }
     public void goToSelectSongs(View view){

@@ -30,5 +30,6 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
     compile 'org.nanohttpd:nanohttpd-webserver:2.3.1'
     compile 'com.android.support:support-v13:23.2.1'
+    compile 'com.google.android.gms:play-services:10.2.0'
     testCompile 'junit:junit:4.12'
 }

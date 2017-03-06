@@ -58,29 +58,17 @@ public class SongRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
     final long musicId = songs.getMusicID();
     final boolean playlist = songs.isInPlayist();
 
- /*  holder.img.setOnClickListener(new View.OnClickListener(){
-     @Override
-     public void onClick(View v) {
-
-       int count = votes;
-       if (count == 0) {
-         count = count + 1;
-         holder.vote.setText(""+count);
-         String voteCount = holder.vote.getText().toString();
-         MusicBean song = new MusicBean(musicId,title, artist,playlist, count);
-         mSongs.updateItemAt(position,song);
-         notifyDataSetChanged();
-         //Add into an arraylist
-
-         map.put(Long.toString(musicId),Integer.toString(count));
-         System.out.println(map);
-         Log.d(LOG_TAG,"The map is"+map.toString());
-
-       }
-     }
-
-   });*/
    }
+
+  //Ashwin's change - to refresh playlist on update call from server
+  public void updatePlaylistData(ArrayList<MusicBean> refreshedPlaylist){
+      songs.clear();
+      songs.addAll(refreshedPlaylist);
+      mSongs.clear();
+      mSongs.addAll(refreshedPlaylist);
+      notifyDataSetChanged();
+
+  }
 
   @Override
   public int getItemCount() {
