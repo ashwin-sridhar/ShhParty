@@ -45,8 +45,7 @@
         <activity android:name=".member.PartyHome" />
         <activity android:name=".host.PartyConsole" />
         <activity android:name=".DummyMusicPlay" />
-
-        <service android:name=".sensing.ActivityRecognizedService" />
+        
         <service android:name=".music.MusicXpress" />
         <service android:name=".music.MusicXpressRemote" />
         <service android:name=".sensing.ActivityRecognizedService"/>
