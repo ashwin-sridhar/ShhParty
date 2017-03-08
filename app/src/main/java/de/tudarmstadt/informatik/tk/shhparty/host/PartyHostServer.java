@@ -476,7 +476,7 @@ public class PartyHostServer extends Thread implements Handler.Callback{
             return;
         }
 
-        Log.d(LOG_TAG, "Broadcasting chat message: " + commandToShare.toString());
+        Log.d(LOG_TAG, "Broadcasting command message: " + commandToShare.toString());
 
         for (ObjectOutputStream obj : clientObjOutputStreams)
         {
@@ -502,7 +502,7 @@ public class PartyHostServer extends Thread implements Handler.Callback{
                 toClientStream.writeUnshared(commandToSend);
                 //toClientStream.writeObject(musicInfo);
                 toClientStream.flush();
-                Log.d(LOG_TAG, "Chat message Sent: " + commandToSend.toString());
+                Log.d(LOG_TAG, "Command message Sent: " + commandToSend.toString());
             }
         }
         catch (IOException e)

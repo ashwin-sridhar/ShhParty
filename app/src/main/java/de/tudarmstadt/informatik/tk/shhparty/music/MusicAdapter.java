@@ -29,7 +29,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             musicTrack=(TextView) itemView.findViewById(R.id.musicitem_track);
-            musicArtist=(TextView) itemView.findViewById(R.id.musicitem_artist);
+            //musicArtist=(TextView) itemView.findViewById(R.id.musicitem_artist);
         }
     }
 
@@ -61,9 +61,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
 
         MusicBean musicitem=listOfMusic.get(position);
         TextView trackTextView=holder.musicTrack;
-        TextView artistTextView=holder.musicArtist;
         trackTextView.setText(musicitem.getMusicTitle());
-        artistTextView.setText(musicitem.getArtist());
 
 
     }

@@ -1,15 +1,29 @@
 package de.tudarmstadt.informatik.tk.shhparty.utils;
 
+import android.net.Uri;
+
+import java.io.Serializable;
+
 /**
  * Created by Ashwin on 3/5/2017.
  */
 
-public class CommandBean {
+public class CommandBean implements Serializable {
 
     private String command;
     private long startPosition;
     private String URL;
     private long trackLength;
+
+    public String getTrackName() {
+        return trackName;
+    }
+
+    public void setTrackName(String trackName) {
+        this.trackName = trackName;
+    }
+
+    private String trackName;
 
     public String getCommand() {
         return command;

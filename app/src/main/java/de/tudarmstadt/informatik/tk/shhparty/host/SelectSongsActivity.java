@@ -64,11 +64,16 @@ public class SelectSongsActivity extends Activity {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
+                MusicBean selectedMusic = musicInfoToShare.get(position);
                 Log.d(LOG_TAG,"Clicked!");
-                v.setSelected(true);
-                //MusicBean selectedMusic=musicAdapter.getItem(position);
-                MusicBean selectedMusic=musicInfoToShare.get(position);
-                selectedMusic.setInPlayist(true);
+                if(!v.isSelected()) {
+                    v.setSelected(true);
+                    //MusicBean selectedMusic=musicAdapter.getItem(position);
+                    selectedMusic.setInPlayist(true);
+                }else if(v.isSelected()){
+                    v.setSelected(false);
+                    selectedMusic.setInPlayist(false);
+                }
                 //commenting to fix the duplicate entry problem in playlist
                // musicInfoToShare.add(selectedMusic);
             }
@@ -106,12 +111,14 @@ public class SelectSongsActivity extends Activity {
 
         if(musicCursor!=null && musicCursor.moveToFirst()){
             //get columns
+
             int titleColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.TITLE);
             int idColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media._ID);
             int artistColumn = musicCursor.getColumnIndex
                     (android.provider.MediaStore.Audio.Media.ARTIST);
+
             //add songs to list
             do {
                 long thisId = musicCursor.getLong(idColumn);

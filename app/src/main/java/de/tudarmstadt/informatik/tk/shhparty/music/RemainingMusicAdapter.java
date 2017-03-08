@@ -29,7 +29,7 @@ public class RemainingMusicAdapter extends RecyclerView.Adapter<RemainingMusicAd
         public ViewHolder(View itemView) {
             super(itemView);
             musicTrack=(TextView) itemView.findViewById(R.id.toAdd_musictrack);
-            musicArtist=(TextView) itemView.findViewById(R.id.toAdd_musicartist);
+            //musicArtist=(TextView) itemView.findViewById(R.id.toAdd_musicartist);
         }
     }
 
@@ -49,7 +49,7 @@ public class RemainingMusicAdapter extends RecyclerView.Adapter<RemainingMusicAd
     @Override
     public RemainingMusicAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context=parent.getContext();
-        View addToplistview= LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_addtoplaylist,null);
+        View addToplistview= LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_addtoplaylist,parent,false);
         ViewHolder resultHolder=new ViewHolder(addToplistview);
         return resultHolder;
     }
@@ -59,9 +59,9 @@ public class RemainingMusicAdapter extends RecyclerView.Adapter<RemainingMusicAd
 
         MusicBean musicitem=listOfMusic.get(position);
         TextView trackTextView=holder.musicTrack;
-        TextView artistTextView=holder.musicArtist;
+       // TextView artistTextView=holder.musicArtist;
         trackTextView.setText(musicitem.getMusicTitle());
-        artistTextView.setText(musicitem.getArtist());
+       // artistTextView.setText(musicitem.getArtist());
 
 
     }

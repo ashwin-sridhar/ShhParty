@@ -2,13 +2,16 @@ package de.tudarmstadt.informatik.tk.shhparty.music;
 
 import android.app.Service;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +19,9 @@ import android.view.View;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
 import de.tudarmstadt.informatik.tk.shhparty.utils.HostUtils;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 
 /**
  * Created by rohit on 03-03-2017.
@@ -36,6 +41,12 @@ public class MusicXpress extends Service implements
     public static final int FIRST_SONG = 0;
 
     private final IBinder musicBind = new MusicBinder();
+
+    private boolean isPlayerPaused=false;
+    private int pausedPosition;
+
+
+    HostUtils hostUtilHandle=new HostUtils();
 
     public void onCreate() {
         //create the service
@@ -86,7 +97,8 @@ public class MusicXpress extends Service implements
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        setList(CommonUtils.derivePlaylist());
+        onPlay();
     }
 
     @Override
@@ -97,6 +109,14 @@ public class MusicXpress extends Service implements
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         //start playback
+        SharedBox.getDerivedPlaylist().get(songPosn).setVotes(0);
+        for(int i=0;i<SharedBox.getThePlaylist().size();i++){
+            if(SharedBox.getThePlaylist().get(i).equals(SharedBox.getDerivedPlaylist().get(songPosn))){
+                SharedBox.thePlaylist.get(i).setVotes(0);
+            }
+        }
+        Log.d("MusicXpress","In playlist"+SharedBox.getThePlaylist().get(songPosn).getMusicTitle()+":>"+SharedBox.getThePlaylist().get(songPosn).getVotes());
+        hostUtilHandle.informAboutVoteReset();
         mediaPlayer.start();
     }
 
@@ -107,35 +127,64 @@ public class MusicXpress extends Service implements
 
 
     public void onStop(View view) {
+        hostUtilHandle.buildAndSendStop();
         player.stop();
     }
 
-    public void onPlay(View view){
-        player.reset();
-        setSong(FIRST_SONG); // Always play the 1st song in the playlist
-        //get song
-        MusicBean playSong = songs.get(songPosn);
-        //get id
-        long currSong = playSong.getMusicID();
-        //set uri
-        Uri trackUri = ContentUris.withAppendedId(
-                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                currSong);
-        // TODO: 3/6/2017 Copy first song into webserver as asynctask
-        // TODO: 3/6/2017 Send commandbean to clients
-        HostUtils hostUtilHandle=new HostUtils();
-        hostUtilHandle.buildAndSendCommand(trackUri);
-        try{
-            player.setDataSource(getApplicationContext(), trackUri);
+    public void onPlay(){
+        if(isPlayerPaused){
+            player.seekTo(pausedPosition);
+            player.start();
+            hostUtilHandle.buildAndSendResume(pausedPosition);
+            isPlayerPaused=false;
         }
-        catch(Exception e){
-            Log.e("MusicXpress Service", "Error setting data source", e);
-        }
+        else if(!isPlayerPaused) {
 
-        player.prepareAsync();
+            player.reset();
+            setSong(FIRST_SONG); // Always play the 1st song in the playlist
+            //get song
+            MusicBean playSong = songs.get(songPosn);
+            //get id
+            long currSong = playSong.getMusicID();
+            //playSong.ge
+            //set uri
+            Uri trackUri = ContentUris.withAppendedId(
+                    android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                    currSong);
+            String realPath = getRealPathFromURI(this, trackUri);
+            Log.d("MusicXpress", "Real path is" + realPath);
+            // TODO: 3/6/2017 Copy first song into webserver as asynctask
+            // TODO: 3/6/2017 Send commandbean to clients
+            hostUtilHandle.buildAndSendPlay(realPath,playSong.getMusicTitle());
+            try {
+                player.setDataSource(getApplicationContext(), trackUri);
+            } catch (Exception e) {
+                Log.e("MusicXpress Service", "Error setting data source", e);
+            }
+
+            player.prepareAsync();
+        }
     }
 
     public void onPause(View view){
+        hostUtilHandle.buildAndSendPause();
+        isPlayerPaused=true;
         player.pause();
+        pausedPosition=player.getCurrentPosition();
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }

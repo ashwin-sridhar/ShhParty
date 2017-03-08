@@ -1,7 +1,10 @@
 package de.tudarmstadt.informatik.tk.shhparty.utils;
 
 import java.io.File;
+import java.lang.reflect.Array;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatMessage;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
@@ -103,6 +106,27 @@ public class SharedBox {
     }
 
     public static CommandBean receivedCommand;
+
+    public static HashMap<String, Socket> getNameSocketMapping() {
+        return nameSocketMapping;
+    }
+
+    public static void setNameSocketMapping(HashMap<String, Socket> nameSocketMapping) {
+        SharedBox.nameSocketMapping = nameSocketMapping;
+    }
+
+    public static HashMap<String,Socket> nameSocketMapping=new HashMap<String,Socket>();
+
+    public static ArrayList<MusicBean> getDerivedPlaylist() {
+        return derivedPlaylist;
+    }
+
+    public static void setDerivedPlaylist(ArrayList<MusicBean> derivedPlaylist) {
+        SharedBox.derivedPlaylist = derivedPlaylist;
+    }
+
+    public static ArrayList<MusicBean >derivedPlaylist=new ArrayList<MusicBean>();
+
 
 
 

@@ -9,7 +9,19 @@ import java.util.Random;
 
 public class ChatMessage implements Serializable {
 
-    public String body, sender, receiver, senderName;
+    public String body;
+
+    public String getSender() {
+        return sender;
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String sender;
+    public String receiver;
+    public String senderName;
     public String Date, Time;
     public String msgid;
     public boolean isMine;// Did I send the message.

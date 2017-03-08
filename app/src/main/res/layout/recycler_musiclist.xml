@@ -11,11 +11,4 @@
         android:id="@+id/musicitem_track"
         android:textColor="@color/red"
         android:textSize="14sp" />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/musicitem_artist"
-        android:textSize="12sp"
-        android:textColor="@color/red"
-        android:gravity="center_vertical"/>
 </LinearLayout>

@@ -67,7 +67,7 @@ public class ChatFragment extends Fragment implements OnClickListener {
     public void sendTextMessage(View v) {
         String message = msg_edittext.getEditableText().toString();
         if (!message.equalsIgnoreCase("")) {
-            final ChatMessage chatMessage = new ChatMessage(user1, user2,
+            final ChatMessage chatMessage = new ChatMessage(SharedBox.getMyProfileBean().getName(), "",
                     message, "" + random.nextInt(1000), true);
             chatMessage.setMsgID();
             chatMessage.body = message;

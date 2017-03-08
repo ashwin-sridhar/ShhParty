@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="8dp"
-    android:background="@drawable/background_selector">
+    >
 
     <ImageView
         android:layout_width="48dp"
@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@color/cyan"
         android:gravity="center"
         android:padding="8dp" />
 </LinearLayout>

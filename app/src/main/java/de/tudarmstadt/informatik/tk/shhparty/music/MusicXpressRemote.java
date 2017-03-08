@@ -15,14 +15,19 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import de.tudarmstadt.informatik.tk.shhparty.member.PartyHome;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommandBean;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
+
 /**
- * Created by rohit on 03-03-2017.
+ * Created by Ashwin
  */
 
 public class MusicXpressRemote extends Service implements
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener,
         MediaPlayer.OnCompletionListener {
 
+    public static boolean isRunningAlready=false;
 
     private MediaPlayer player; //media player
 
@@ -34,9 +39,13 @@ public class MusicXpressRemote extends Service implements
 
     private final IBinder musicBind = new RemoteMusicBinder();
 
+    private long bufferStartTime;
+    private long bufferEndTime;
+
     public void onCreate() {
         //create the service
         super.onCreate();
+        isRunningAlready=true;
         //initialize position
      //   songPosn = 0;
 
@@ -94,6 +103,9 @@ public class MusicXpressRemote extends Service implements
     @Override
     public void onPrepared(MediaPlayer mediaPlayer) {
         //start playback
+        bufferEndTime=System.currentTimeMillis();
+        long elapsedTime=bufferEndTime-bufferStartTime;
+        mediaPlayer.seekTo((int)(long)elapsedTime+300);
         mediaPlayer.start();
     }
 
@@ -103,11 +115,13 @@ public class MusicXpressRemote extends Service implements
     }*/
 
 
-    public void onStop(View view) {
+    public void onStop() {
         player.stop();
     }
 
-    public void onPlay(View view){
+    public void onPlay(){
+        bufferStartTime=System.currentTimeMillis();
+
         player.reset();
         //setSong(FIRST_SONG); //
         //get song
@@ -119,8 +133,14 @@ public class MusicXpressRemote extends Service implements
                 android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 currSong);*/
         // TODO: 3/6/2017 Get the command Bean and set data source, prepareasync
+        CommandBean receivedCommand= SharedBox.getReceivedCommand();
+        String trackUrl=receivedCommand.getURL();
+        String trackName=receivedCommand.getTrackName();
+        PartyHome.songNameInHome.setText(trackName);
+
         try{
-            //player.setDataSource(getApplicationContext(), trackUri);
+            player.setDataSource(trackUrl);
+
         }
         catch(Exception e){
             Log.e("MusicXpress Remote", "Error setting data source", e);
@@ -129,7 +149,12 @@ public class MusicXpressRemote extends Service implements
         player.prepareAsync();
     }
 
-    public void onPause(View view){
+    public void onPause(){
         player.pause();
+    }
+    public void onResume(int continuePosition){
+        player.seekTo(continuePosition+300);
+        player.start();
+
     }
 }

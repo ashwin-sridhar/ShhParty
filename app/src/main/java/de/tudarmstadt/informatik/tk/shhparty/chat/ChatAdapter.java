@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.tudarmstadt.informatik.tk.shhparty.R;
+import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 
 public class ChatAdapter extends BaseAdapter {
 
@@ -57,13 +58,15 @@ public class ChatAdapter extends BaseAdapter {
 
         TextView msg = (TextView) vi.findViewById(R.id.message_text);
         msg.setText(message.body);
+        TextView sender= (TextView) vi.findViewById(R.id.message_sender);
+        sender.setText(message.sender);
         LinearLayout layout = (LinearLayout) vi
                 .findViewById(R.id.bubble_layout);
         LinearLayout parent_layout = (LinearLayout) vi
                 .findViewById(R.id.bubble_layout_parent);
 
         // if message is mine then align to right
-        if (message.isMine) {
+        if (message.getSender().equals(SharedBox.getMyProfileBean().getName())) {
             layout.setBackgroundResource(R.drawable.bubble2);
             parent_layout.setGravity(Gravity.RIGHT);
         }

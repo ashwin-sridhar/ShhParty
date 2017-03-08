@@ -1,6 +1,8 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -29,6 +33,7 @@ public class PartyHome extends AppCompatActivity implements GoogleApiClient.Conn
 
     public GoogleApiClient mApiClient;
     private final String LOG_TAG="ShhParty_PartyHome";
+    public static TextView songNameInHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,7 @@ public class PartyHome extends AppCompatActivity implements GoogleApiClient.Conn
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        songNameInHome= (TextView) findViewById(R.id.songnameinhome);
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
@@ -80,13 +86,20 @@ public class PartyHome extends AppCompatActivity implements GoogleApiClient.Conn
                 .build();
 
         mApiClient.connect();
+
+
     }
+    @Override
+     public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.options_member,menu);
+        return true;
+     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Intent intent = new Intent( this, ActivityRecognizedService.class );
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 10000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 2000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
     }
 
     @Override
@@ -99,6 +112,7 @@ public class PartyHome extends AppCompatActivity implements GoogleApiClient.Conn
 
     }
 
+
     private class SendProfileDataToHost extends AsyncTask<MemberBean,Integer,String> {
 
         @Override
@@ -109,4 +123,6 @@ public class PartyHome extends AppCompatActivity implements GoogleApiClient.Conn
             return "profile data sent";
         }
     }
+
+
 }

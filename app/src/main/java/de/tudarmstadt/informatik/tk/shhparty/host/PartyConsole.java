@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -100,9 +101,10 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+        Log.v("PartyConsole","Connected to mAPICLIENT");
         Intent intent = new Intent( this, ActivityRecognizedService.class );
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 10000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 15000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
     }
 
     @Override
@@ -150,28 +152,19 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
     // Songs can be played onClick with this method
     public void songPicked(View view){
         musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
-        musicSrv.onPlay(view);
+        musicSrv.onPlay();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        //menu item selected
-        switch (item.getItemId()) {
-            case R.id.pausebutton:
-                //pause
-                break;
-            case R.id.stopbutton:
-                stopService(playIntent);
-                musicSrv=null;
-                System.exit(0);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
+      public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.options_host,menu);
+        return true;
     }
 
     @Override
     protected void onDestroy() {
         stopService(playIntent);
+        unbindService(musicConnection);
         musicSrv=null;
         super.onDestroy();
     }
@@ -180,21 +173,23 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
         Log.v("PartyConsole","OnStop() clicked");
         //// TODO: 3/6/2017 Fire network call to stop
         musicSrv.onStop(view);
+        pauseButton.setVisibility(View.INVISIBLE);
+        playButton.setVisibility(View.VISIBLE);
     }
 
     public void onPlay(View view){
         Log.v("PartyConsole","OnPlay() clicked");
-        playButton.setVisibility(View.GONE);
+        playButton.setVisibility(View.INVISIBLE);
         pauseButton.setVisibility(View.VISIBLE);
 
-        songName.setText(SharedBox.getThePlaylist().get(MusicXpress.FIRST_SONG).getMusicTitle());
+        songName.setText(CommonUtils.derivePlaylist().get(MusicXpress.FIRST_SONG).getMusicTitle());
         // TODO: 3/5/2017 Fire network call to play 
-        musicSrv.onPlay(view);
+        musicSrv.onPlay();
     }
 
     public void onPause(View view){
         Log.v("PartyConsole","OnPause() clicked");
-        pauseButton.setVisibility(View.GONE);
+        pauseButton.setVisibility(View.INVISIBLE);
         playButton.setVisibility(View.VISIBLE);
         // TODO: 3/5/2017 Fire network call to pause 
         musicSrv.onPause(view);

@@ -7,7 +7,9 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatMessage;
 import de.tudarmstadt.informatik.tk.shhparty.host.ConnectionManager;
@@ -60,23 +62,45 @@ public class HostUtils {
         SharedBox.listOfMembers.add(member);
     }
 
-    public synchronized  static void addToNameSocketMap(MemberBean member){
+    public synchronized  static void addToNameSocketMap(MemberBean member,Socket clientSocket){
+        HashMap<String,Socket> nameSocketMapping=SharedBox.getNameSocketMapping();
+        nameSocketMapping.put(member.getName(),clientSocket);
+        SharedBox.setNameSocketMapping(nameSocketMapping);
 
     }
 
-    public void buildAndSendCommand(Uri trackUri){
+    public void buildAndSendPlay(String realTrackPath,String trackName){
 
        Log.d("HostUtils","Calling Asynctask to copy track and send command");
-        new copyTrackAndSendCommand().execute(trackUri);
+        new copyTrackAndSendCommand().execute(realTrackPath,trackName);
     }
 
-    private class copyTrackAndSendCommand extends AsyncTask<Uri,Integer,String>{
+    public void buildAndSendPause(){
+
+        Log.d("HostUtils","Calling Asynctask to send pause command");
+        new SendPauseCommand().execute();
+    }
+
+    public void buildAndSendResume(int startPos){
+        Log.d("HostUtils","Calling Asynctask to send resume command");
+        new SendResumeCommand().execute(startPos);
+    }
+
+    public void informAboutVoteReset(){
+        Log.d("HostUtils","Calling Asynctask to inform vote reset");
+        new InformAboutVoteReset().execute();
+    }
+    public void buildAndSendStop(){
+        Log.d("HostUtils","Calling Asynctask to send stop command");
+        new SendStopCommand().execute();
+    }
+    private class copyTrackAndSendCommand extends AsyncTask<String,Integer,String>{
 
         @Override
-        protected String doInBackground(Uri... trackUri) {
+        protected String doInBackground(String... params) {
 
             File wwwroot=SharedBox.getWwwroot();
-            File localMusic= new File(trackUri[0].getPath());
+            File localMusic= new File(params[0].toString());
             File hostedFile = new File(wwwroot,localMusic.getName());
             Log.d("HostUtils","file to copy:"+localMusic.getAbsolutePath());
             try {
@@ -87,8 +111,58 @@ public class HostUtils {
             Uri webMusicURI = Uri.parse("http://" + SharedBox.getHttpHostIP() + ":"
                     + String.valueOf(ConnectionManager.HTTP_PORT) + "/" + hostedFile.getName());
             Log.d("HostUtils","WEB MUSIC URI:"+webMusicURI.toString());
-            SharedBox.getServer().sendPlay(webMusicURI.toString(), 0, 0);
+            CommandBean commBean=new CommandBean();
+            commBean.setCommand("PLAY");
+            commBean.setURL(webMusicURI.toString());
+            commBean.setStartPosition(0);
+            commBean.setTrackLength(0);
+            commBean.setTrackName(params[1]);
+            SharedBox.getServer().broadcastCommandMessage(commBean);
             return "Copied and sent";
+        }
+    }
+
+    private class SendPauseCommand extends AsyncTask<String,Integer,String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            CommandBean commBean=new CommandBean();
+            commBean.setCommand("PAUSE");
+            SharedBox.getServer().broadcastCommandMessage(commBean);
+            return "Sent pause command";
+        }
+    }
+
+    private class SendResumeCommand extends AsyncTask<Integer,Integer,String>{
+
+        @Override
+        protected String doInBackground(Integer... params) {
+
+            CommandBean commBean=new CommandBean();
+            commBean.setCommand("RESUME");
+            commBean.setStartPosition(params[0]);
+            SharedBox.getServer().broadcastCommandMessage(commBean);
+            return "Sent Resume command";
+        }
+    }
+
+    private class InformAboutVoteReset extends AsyncTask<Integer,Integer,String>{
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            SharedBox.getServer().broadcastMusicInfo(SharedBox.getThePlaylist());
+            Log.d("HostUtils","Votereset broadcast");
+            return "Informed about vote reset";
+        }
+    }
+    private class SendStopCommand extends AsyncTask<Integer,Integer,String>{
+
+        @Override
+        protected String doInBackground(Integer... params) {
+            CommandBean commBean=new CommandBean();
+            commBean.setCommand("STOP");
+            SharedBox.getServer().broadcastCommandMessage(commBean);
+            return "Sent Stop Command";
         }
     }
 }

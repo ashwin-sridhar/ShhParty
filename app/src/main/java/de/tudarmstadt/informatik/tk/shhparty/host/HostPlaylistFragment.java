@@ -49,20 +49,21 @@ public class HostPlaylistFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
-                if(ActivityRecognizedService.dancing) {
-                    Log.d(LOG_TAG, "Clicked!");
-                    MusicBean selectedMusic = allSongs.get(position);
-                    votedSongs.add(Long.toString(selectedMusic.getMusicID()));
+                    if(ActivityRecognizedService.dancing) {
+                        Log.d(LOG_TAG, "Clicked!");
+                        MusicBean selectedMusic = allSongs.get(position);
+                        votedSongs.add(Long.toString(selectedMusic.getMusicID()));
 
-                    int voteCount = selectedMusic.getVotes();
-                    //voteCount++;
-                    selectedMusic.setVotes(voteCount);
-                    HostUtils.updateTheVotes(selectedMusic);
-                    //Asynctask to broadcast music
-                    new BroadCastMusicInfo().execute(selectedMusic);
-                }else{
-                    Toast.makeText(getActivity(), "You need to DANCE to be able to vote!", Toast.LENGTH_LONG).show();
-                }
+                        int voteCount = selectedMusic.getVotes();
+                        //voteCount++;
+                        selectedMusic.setVotes(voteCount);
+                        HostUtils.updateTheVotes(selectedMusic);
+                        //Asynctask to broadcast music
+                        new BroadCastMusicInfo().execute(selectedMusic);
+                    }else{
+                        Toast.makeText(getActivity(),"You need to DANCE to be able to vote!",Toast.LENGTH_LONG).show();
+                    }
+
 
             }
         });

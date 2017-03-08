@@ -1,9 +1,13 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.net.wifi.WpsInfo;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
@@ -12,6 +16,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.net.wifi.p2p.nsd.WifiP2pDnsSdServiceRequest;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
 import android.widget.ListView;
@@ -22,10 +27,14 @@ import java.util.List;
 import java.util.Map;
 
 import de.tudarmstadt.informatik.tk.shhparty.AppTimer;
+import de.tudarmstadt.informatik.tk.shhparty.GoodbyeActivity;
 import de.tudarmstadt.informatik.tk.shhparty.SongRecyclerAdapter;
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatAdapter;
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatFragment;
+import de.tudarmstadt.informatik.tk.shhparty.music.MusicXpress;
+import de.tudarmstadt.informatik.tk.shhparty.music.MusicXpressRemote;
 import de.tudarmstadt.informatik.tk.shhparty.music.RemainingMusicAdapter;
+import de.tudarmstadt.informatik.tk.shhparty.utils.CommandBean;
 import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.host.PartyHostServer;
@@ -58,7 +67,16 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
     private Handler handler=new Handler(this);
     private AppTimer timer;
 
+    PartyServicesBean partyInfo;
+
     private boolean alreadyRendered=false;
+
+    //MusicXpress Remote Part
+    private MusicXpressRemote musicSrv;
+    private boolean musicBound=false;
+    private boolean alreadyInitialized=false;
+    Intent playIntent=null;
+    ServiceConnection musicConnection=null;
 
 
     @Override
@@ -146,7 +164,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                                 //List the party events in the UI
                                 //ListView partyListToUpdate=listOfPartiesView;
                                 //PartyListAdapter adapter= (PartyListAdapter) listOfPartiesView.getAdapter();
-                                PartyServicesBean partyInfo = new PartyServicesBean();
+                                partyInfo = new PartyServicesBean();
                                 partyInfo.wifiP2PDevice = srcDevice;
                                 partyInfo.partyName=instanceName;
                                 partyInfo.serviceRegistrationType = registrationType;
@@ -210,7 +228,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
 
     }
 
-    public void joinParty(PartyServicesBean partyInfo){
+    public void joinParty(final PartyServicesBean partyInfo){
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = partyInfo.wifiP2PDevice.deviceAddress;
         config.wps.setup = WpsInfo.PBC;
@@ -239,6 +257,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
             @Override
             public void onFailure(int errorCode) {
                 Log.d(LOG_TAG,"Connect call failed"+errorCode);
+                joinParty(partyInfo);
                 //
             }
         });
@@ -267,7 +286,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
     public boolean handleMessage(Message msg) {
         switch (msg.what)
         {
-            case PartyMemberClient.EVENT_RECEIVE_MSG:
+           /* case PartyMemberClient.EVENT_RECEIVE_MSG:
                 byte[] readBuf = (byte[]) msg.obj;
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf);
@@ -282,8 +301,8 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                     try
                     {
                         Log.d(LOG_TAG,"Supposed to call play from here");
-                      /*  playMusic(cmdString[1], Long.parseLong(cmdString[2]),
-                                Integer.parseInt(cmdString[3]));*/
+                      *//*  playMusic(cmdString[1], Long.parseLong(cmdString[2]),
+                                Integer.parseInt(cmdString[3]));*//*
                     }
                     catch (NumberFormatException e)
                     {
@@ -304,7 +323,7 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                 // Toast.makeText(mContentView.getContext(),
                 // "Received message: " + readMessage, Toast.LENGTH_SHORT)
                 // .show();
-                break;
+                break;*/
 
             case PartyMemberClient.CLIENT_CALLBACK:
                 clientThread = (PartyMemberClient) msg.obj;
@@ -341,8 +360,67 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
               //  startActivity(newMessage);
             case PartyMemberClient.COMMAND_RECEIVED:
                 Log.d(LOG_TAG,"Callback received, got a command");
-                // TODO: 3/6/2017 Bind to musicremote service and start onplay also 
 
+                // TODO: 3/6/2017 Bind to musicremote service and start onplay also
+
+                if(!MusicXpressRemote.isRunningAlready) {
+                     musicConnection = new ServiceConnection() {
+
+                        @Override
+                        public void onServiceConnected(ComponentName name, IBinder service) {
+                            Log.v("PartyConsole", "onServiceConnected()");
+                            MusicXpressRemote.RemoteMusicBinder remoteBinder = (MusicXpressRemote.RemoteMusicBinder) service;
+                            //get service
+                            musicSrv = remoteBinder.getService();
+                            musicBound = true;
+                            alreadyInitialized = true;
+                            CommandBean receivedCommand = SharedBox.getReceivedCommand();
+                            if (receivedCommand.getCommand().equals("PLAY")) {
+                                Log.v(LOG_TAG, "Calling onPlay of MusicXpressRemote");
+
+                                musicSrv.onPlay();
+
+                            }
+                        }
+
+                        @Override
+                        public void onServiceDisconnected(ComponentName name) {
+                            musicBound = false;
+                        }
+                    };
+                }
+                if(MusicXpressRemote.isRunningAlready) {
+                    CommandBean receivedCommand = SharedBox.getReceivedCommand();
+                    if (receivedCommand.getCommand().equals("PLAY")) {
+                        Log.v(LOG_TAG, "Already running-Calling onPlay of MusicXpressRemote");
+
+                        musicSrv.onPlay();
+
+                    }
+                    else if(receivedCommand.getCommand().equals("PAUSE")){
+                        Log.v(LOG_TAG,"Already running-Calling onPause of MusicXpressRemote");
+                        musicSrv.onPause();
+                    }
+                    else if(receivedCommand.getCommand().equals("RESUME")){
+                        Log.v(LOG_TAG,"Already running- Calling onResume of MusicXpressRemote");
+                        musicSrv.onResume((int)(long)receivedCommand.getStartPosition());
+                    }
+                    else if(receivedCommand.getCommand().equals("STOP")){
+                        Log.v(LOG_TAG,"Already running- Calling onResume of MusicXpressRemote");
+                        musicSrv.onStop();
+                    }
+                }
+                    if(playIntent==null){
+                        playIntent = new Intent(this, MusicXpressRemote.class);
+                        bindService(playIntent, musicConnection, Context.BIND_AUTO_CREATE);
+                        startService(playIntent);
+                    }
+
+                break;
+            case PartyMemberClient.KICKED_OUT:
+                Intent sayGoodbye=new Intent(this, GoodbyeActivity.class);
+                startActivity(sayGoodbye);
+                break;
 
             default:
                 Log.d(TAG, "I thought we heard something? Message type: "
@@ -439,5 +517,6 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
 
         alreadyRendered=true;
     }*/
+
 
 }

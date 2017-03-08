@@ -19,11 +19,7 @@ public class HostorJoinActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hostor_join);
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.settings,menu);
-        return true;
-    }
+
     public void goToCreateUserProfile(View view){
         Intent goToUserProfileIntent=new Intent(this, CreateProfile.class);
         if(view.getTag()!=null){

@@ -1,5 +1,6 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
+import android.app.AlertDialog;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -55,6 +56,7 @@ public class PartyMemberClient extends Thread {
 
     public static final int CHATMESSAGE_RECEIVE=111;
     public static final int COMMAND_RECEIVED=150;
+    public static final int KICKED_OUT=170;
 
     InputStream iStream;
     OutputStream oStream;
@@ -171,6 +173,7 @@ public class PartyMemberClient extends Thread {
             // connection to be closed in the middle of socket read
             catch (SocketException e)
             {
+                handler.obtainMessage(KICKED_OUT).sendToTarget();
                 Log.d(LOG_TAG, "Socket connection has ended.", e);
                 disconnect();
             }
@@ -178,6 +181,9 @@ public class PartyMemberClient extends Thread {
             {
                 Log.e(LOG_TAG, "Unexpectedly disconnected during socket read.", e);
                 disconnect();
+                Log.d(LOG_TAG,"Got kicked out");
+                handler.obtainMessage(KICKED_OUT).sendToTarget();
+                // TODO: 3/7/2017 Handler saying got kicked out which will show alert and exit on click ok 
             }
             catch (NumberFormatException e)
             {

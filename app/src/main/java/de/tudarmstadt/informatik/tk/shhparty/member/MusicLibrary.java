@@ -52,12 +52,19 @@ public class MusicLibrary extends Fragment {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 // do it
                 Log.d(LOG_TAG,"Clicked!");
-                v.setSelected(true);
-                //MusicBean selectedMusic=musicAdapter.getItem(position);
                 MusicBean selectedMusic=remainingSongs.get(position);
+                if(!v.isSelected()){
+                    v.setSelected(true);
+
+                //MusicBean selectedMusic=musicAdapter.getItem(position);
+
                // String selectedMusicId=Long.toString(selectedMusic.getMusicID());
                // selectedMusicIDs.add(selectedMusicId);
                 selectedSongs.add(selectedMusic);
+                }else if(v.isSelected()){
+                    v.setSelected(false);
+                    selectedSongs.remove(selectedMusic);
+                }
                 //commenting to fix the duplicate entry problem in playlist
                 // musicInfoToShare.add(selectedMusic);
             }

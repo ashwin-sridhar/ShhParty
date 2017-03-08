@@ -1,9 +1,13 @@
 package de.tudarmstadt.informatik.tk.shhparty.utils;
 
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.provider.MediaStore;
+import android.util.Log;
 
 
 import java.io.File;
@@ -18,6 +22,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicBean;
@@ -119,6 +125,16 @@ public class CommonUtils {
             if(allSongs.get(i).isInPlayist())
                 playlist.add(allSongs.get(i));
         }
+        Collections.sort(playlist, new Comparator<MusicBean>() {
+            @Override
+            public int compare(MusicBean lhs, MusicBean rhs) {
+                return rhs.getVotes()-lhs.getVotes();
+            }
+        });
+        SharedBox.setDerivedPlaylist(playlist);
+        Log.d("CommonUtils","Derived playlist-first item follows");
+        Log.d("CommonUtils",playlist.get(0).getMusicTitle()+playlist.get(0).getVotes());
+
         return playlist;
     }
 
@@ -133,6 +149,5 @@ public class CommonUtils {
         }
         return remainingSongs;
     }
-
 
 }

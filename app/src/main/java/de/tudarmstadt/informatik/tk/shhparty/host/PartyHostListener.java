@@ -62,6 +62,7 @@ public class PartyHostListener extends Thread {
                 }
                 else if(receivedObject instanceof MemberBean){
                     HostUtils.addNewMemberToParty((MemberBean)receivedObject);
+                    HostUtils.addToNameSocketMap((MemberBean) receivedObject,clientSocket);
                     handler.obtainMessage(MEMBERDATA_RECEIVED).sendToTarget();
                 }
               else{
