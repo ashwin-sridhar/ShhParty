@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,7 +28,6 @@ import de.tudarmstadt.informatik.tk.shhparty.music.MusicXpress;
 import de.tudarmstadt.informatik.tk.shhparty.music.MusicXpress.MusicBinder;
 import de.tudarmstadt.informatik.tk.shhparty.sensing.ActivityRecognizedService;
 import de.tudarmstadt.informatik.tk.shhparty.utils.CommonUtils;
-import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 
 /**
  * Created by Ashwin on 1/31/2017.
@@ -104,7 +102,7 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
         Log.v("PartyConsole","Connected to mAPICLIENT");
         Intent intent = new Intent( this, ActivityRecognizedService.class );
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 15000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 5000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
     }
 
     @Override

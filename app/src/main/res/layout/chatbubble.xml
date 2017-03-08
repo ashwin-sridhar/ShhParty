@@ -21,6 +21,13 @@
             android:textStyle="normal|bold" />
 
         <TextView
+            android:id="@+id/space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - "
+            android:textColor="@android:color/primary_text_light"/>
+
+        <TextView
             android:id="@+id/message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
