@@ -127,6 +127,16 @@ public class SharedBox {
 
     public static ArrayList<MusicBean >derivedPlaylist=new ArrayList<MusicBean>();
 
+    public static MemberBean getMemberToRemove() {
+        return memberToRemove;
+    }
+
+    public static void setMemberToRemove(MemberBean memberToRemove) {
+        SharedBox.memberToRemove = memberToRemove;
+    }
+
+    public static MemberBean memberToRemove;
+
 
 
 

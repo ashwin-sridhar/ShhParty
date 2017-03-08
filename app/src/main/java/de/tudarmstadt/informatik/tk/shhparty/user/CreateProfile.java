@@ -17,7 +17,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import de.tudarmstadt.informatik.tk.shhparty.PartyInfoActivity;
@@ -57,7 +61,7 @@ public class CreateProfile extends Activity implements View.OnClickListener {
     et1.setText(name);
 
     // Load ProfilePic from storage, if it is present
-    Bitmap bmp = StorageUtils.getImageFromStorage(this, "ProfilePic", "jpg"); // Context context,String name,String extension
+    bmp = StorageUtils.getImageFromStorage(this, "ProfilePic", "jpg"); // Context context,String name,String extension
     ImageView imageView = (ImageView) findViewById(R.id.imgView);
     imageView.setImageBitmap(bmp);
   }
@@ -72,9 +76,23 @@ public class CreateProfile extends Activity implements View.OnClickListener {
         //Code to save data in bean
         MemberBean myProfileData=new MemberBean();
         myProfileData.setName(et1.getText().toString());
-        myProfileData.setProfilePicture(bmp);
+       // File imgAsPng=new File(getApplicationContext().getCacheDir(),"picAsPng");
+      /*  try {
+          imgAsPng.createNewFile();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }*/
+        if(bmp!=null) {
+          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+          bmp.compress(Bitmap.CompressFormat.PNG, 10, bos);
+          byte[] bitmapdata = bos.toByteArray();
+
+          myProfileData.setBitmapdata(bitmapdata);
+        }
+
         Log.d("Profile",myProfileData.toString());
         SharedBox.setMyProfileBean(myProfileData);
+
 
         Intent intentBasedOnRole = new Intent(this, PartyInfoActivity.class);
         if(getIntent().getStringExtra("role")!=null) {

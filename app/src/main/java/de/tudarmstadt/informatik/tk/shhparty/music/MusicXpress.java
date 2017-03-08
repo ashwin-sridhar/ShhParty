@@ -129,6 +129,7 @@ public class MusicXpress extends Service implements
     public void onStop(View view) {
         hostUtilHandle.buildAndSendStop();
         player.stop();
+        setList(CommonUtils.derivePlaylist());
     }
 
     public void onPlay(){

@@ -2,6 +2,8 @@ package de.tudarmstadt.informatik.tk.shhparty.host;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,8 +48,11 @@ public class MemberListAdapter extends RecyclerView.Adapter<MemberHolder> {
     @Override
     public void onBindViewHolder(MemberHolder holder, int position) {
         holder.profileNameView.setText(listOfMembers.get(position).getName());
-        if(listOfMembers.get(position).getProfilePicture()!=null) {
-            holder.profilePicView.setImageBitmap(listOfMembers.get(position).getProfilePicture());
+        if(listOfMembers.get(position).getBitmapdata()!=null) {
+            byte[] bitmapdata=listOfMembers.get(position).getBitmapdata();
+            Bitmap retrievedImage= BitmapFactory.decodeByteArray(bitmapdata,0,bitmapdata.length);
+
+            holder.profilePicView.setImageBitmap(retrievedImage);
         }
         else{
             holder.profilePicView.setImageResource(R.drawable.profilepic_dummy);

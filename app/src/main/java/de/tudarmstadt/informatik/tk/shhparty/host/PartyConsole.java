@@ -104,7 +104,7 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
         Log.v("PartyConsole","Connected to mAPICLIENT");
         Intent intent = new Intent( this, ActivityRecognizedService.class );
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 15000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 6000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
     }
 
     @Override
@@ -160,6 +160,23 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
         getMenuInflater().inflate(R.menu.options_host,menu);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_endpartyitem:
+                SharedBox.getServer().disconnectServer();
+                Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+                homeIntent.addCategory( Intent.CATEGORY_HOME );
+                homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(homeIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 
     @Override
     protected void onDestroy() {

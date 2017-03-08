@@ -1,8 +1,6 @@
 package de.tudarmstadt.informatik.tk.shhparty.member;
 
-import android.app.AlertDialog;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -90,16 +88,16 @@ public class PartyHome extends AppCompatActivity implements GoogleApiClient.Conn
 
     }
     @Override
-     public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.options_member,menu);
         return true;
-     }
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Intent intent = new Intent( this, ActivityRecognizedService.class );
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT );
-        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 2000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
+        ActivityRecognition.ActivityRecognitionApi.requestActivityUpdates( mApiClient, 6000, pendingIntent ); // (GoogleApiClient client, long detectionIntervalMillis, PendingIntent callbackIntent)
     }
 
     @Override

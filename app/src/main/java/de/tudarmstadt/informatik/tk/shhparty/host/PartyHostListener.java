@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatMessage;
 import de.tudarmstadt.informatik.tk.shhparty.member.MemberBean;
@@ -22,12 +24,16 @@ public class PartyHostListener extends Thread {
 
     private Socket clientSocket;
     private Handler handler;
+    private MemberBean clientMemberBean;
     ObjectInputStream inStreamFromClient;
     private static final String LOG_TAG="SHH_PartyHostListener";
 
     public static final int PLAYLIST_UPDATED=108;
     public static final int CHATBOX_UPDATED=110;
     public static final int MEMBERDATA_RECEIVED=130;
+    public static final int SOMECLIENT_LEFT=210;
+
+    private boolean stillRelevant=true;
 
     public PartyHostListener(Handler handler,Socket clientSocket) throws IOException
     {
@@ -40,7 +46,7 @@ public class PartyHostListener extends Thread {
     public void run() {
 
         Log.d(LOG_TAG,"Child thread started");
-        while(true) {
+        while(stillRelevant) {
             if (inStreamFromClient == null) {
                 setupInputStream();
             }
@@ -61,6 +67,7 @@ public class PartyHostListener extends Thread {
                     handler.obtainMessage(CHATBOX_UPDATED).sendToTarget();
                 }
                 else if(receivedObject instanceof MemberBean){
+                    clientMemberBean=(MemberBean) receivedObject;
                     HostUtils.addNewMemberToParty((MemberBean)receivedObject);
                     HostUtils.addToNameSocketMap((MemberBean) receivedObject,clientSocket);
                     handler.obtainMessage(MEMBERDATA_RECEIVED).sendToTarget();
@@ -72,7 +79,11 @@ public class PartyHostListener extends Thread {
             } catch (ClassNotFoundException e) {
                 //e.printStackTrace();
             } catch (IOException e) {
-                //e.printStackTrace();
+                Log.d(LOG_TAG,"Probably someone left-Exception");
+                SharedBox.setMemberToRemove(clientMemberBean);
+                handler.obtainMessage(PartyHostListener.SOMECLIENT_LEFT).sendToTarget();
+                stillRelevant=false;
+
             }
            // Log.d(LOG_TAG, "Received object is" + receivedObject.toString());
         }
@@ -86,4 +97,5 @@ public class PartyHostListener extends Thread {
             e.printStackTrace();
         }
     }
+
 }

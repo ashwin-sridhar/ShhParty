@@ -67,6 +67,7 @@ public class MembersListFragment extends Fragment {
                                 try {
                                     SharedBox.nameSocketMapping.get(listOfMembers.get(position).getName()).close();
                                     listOfMembers.remove(position);
+                                    SharedBox.nameSocketMapping.remove(listOfMembers.get(position).getName());
                                     memListAdapter.notifyDataSetChanged();
                                 } catch (IOException e) {
                                     e.printStackTrace();

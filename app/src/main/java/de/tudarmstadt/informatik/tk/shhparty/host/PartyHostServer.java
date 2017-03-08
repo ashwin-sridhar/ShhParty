@@ -603,6 +603,9 @@ public class PartyHostServer extends Thread implements Handler.Callback{
                 handler.obtainMessage(PartyHostListener.MEMBERDATA_RECEIVED).sendToTarget();
                 Log.d(LOG_TAG,"Asked ConnectionManager to take care of member list updation");
                 break;
+            case PartyHostListener.SOMECLIENT_LEFT:
+                handler.obtainMessage(PartyHostListener.SOMECLIENT_LEFT).sendToTarget();
+                break;
             default:
                 Log.d(LOG_TAG, "In default block: "
                         + msg.what);

@@ -192,39 +192,50 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
                     }
                 });
 
+        serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
+
         // After attaching listeners, create a service request and initiate
         // discovery.
 
-        serviceRequest = WifiP2pDnsSdServiceRequest.newInstance();
-        p2pManager.addServiceRequest(channel, serviceRequest,
-                new WifiP2pManager.ActionListener() {
-
-                    @Override
-                    public void onSuccess() {
-
-                        //Nothing done as of now
-
-                    }
-
-                    @Override
-                    public void onFailure(int arg0) {
-                        //nothing done as of now
-                    }
-                });
-        p2pManager.discoverServices(channel, new WifiP2pManager.ActionListener() {
-
+        p2pManager.clearServiceRequests(channel,new WifiP2pManager.ActionListener(){
             @Override
             public void onSuccess() {
+                p2pManager.addServiceRequest(channel, serviceRequest,
+                        new WifiP2pManager.ActionListener() {
 
-                Log.d(LOG_TAG,"Discovery initiated successfully..");
+                            @Override
+                            public void onSuccess() {
+                                p2pManager.discoverServices(channel, new WifiP2pManager.ActionListener() {
+
+                                    @Override
+                                    public void onSuccess() {
+
+                                        Log.d(LOG_TAG,"Discovery initiated successfully..");
+                                    }
+
+                                    @Override
+                                    public void onFailure(int arg0) {
+                                        Log.d(LOG_TAG,"Discovery initiation failed-reason code is:"+arg0);
+
+                                    }
+                                });
+
+
+                            }
+
+                            @Override
+                            public void onFailure(int arg0) {
+                                //nothing done as of now
+                            }
+                        });
             }
 
             @Override
-            public void onFailure(int arg0) {
-               Log.d(LOG_TAG,"Discovery initiation failed-reason code is:"+arg0);
+            public void onFailure(int reason) {
 
             }
         });
+
 
     }
 
@@ -256,7 +267,8 @@ public class SearchForParties extends ConnectionTemplate implements WifiP2pManag
 
             @Override
             public void onFailure(int errorCode) {
-                Log.d(LOG_TAG,"Connect call failed"+errorCode);
+                Log.d(LOG_TAG,"Connect call failed..Should retry"+errorCode);
+
                 joinParty(partyInfo);
                 //
             }

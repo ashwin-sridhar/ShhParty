@@ -2,6 +2,7 @@ package de.tudarmstadt.informatik.tk.shhparty.member;
 
 import android.graphics.Bitmap;
 
+import java.io.File;
 import java.io.Serializable;
 
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
@@ -14,6 +15,16 @@ public class MemberBean implements Serializable {
 
     private String name;
     private Bitmap profilePicture;
+
+    public byte[] getBitmapdata() {
+        return bitmapdata;
+    }
+
+    public void setBitmapdata(byte[] bitmapdata) {
+        this.bitmapdata = bitmapdata;
+    }
+
+    private byte[] bitmapdata;
 
     public String getName() {
         return name;

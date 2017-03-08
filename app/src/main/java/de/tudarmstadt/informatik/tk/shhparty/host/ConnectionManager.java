@@ -25,6 +25,7 @@ import java.util.Map;
 import de.tudarmstadt.informatik.tk.shhparty.SongRecyclerAdapter;
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatAdapter;
 import de.tudarmstadt.informatik.tk.shhparty.chat.ChatFragment;
+import de.tudarmstadt.informatik.tk.shhparty.member.MemberBean;
 import de.tudarmstadt.informatik.tk.shhparty.member.PartyHome;
 import de.tudarmstadt.informatik.tk.shhparty.utils.SharedBox;
 import de.tudarmstadt.informatik.tk.shhparty.wifip2p.ConnectionTemplate;
@@ -120,21 +121,34 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
         partyServiceData.put("devicestatus", "available");
         partyServiceData.put("portnumber", String.valueOf(ConnectionUtils.getPort(ConnectionManager.this)));
         partyServiceData.put("wifiip", CommonUtils.getWiFiIPAddress(ConnectionManager.this));
-        WifiP2pDnsSdServiceInfo partyServiceInfo = WifiP2pDnsSdServiceInfo.newInstance("_shhpartymusic", "_shhparty._tcp", partyServiceData);
+        final WifiP2pDnsSdServiceInfo partyServiceInfo = WifiP2pDnsSdServiceInfo.newInstance("_shhpartymusic", "_shhparty._tcp", partyServiceData);
       
-      
-            p2pManager.addLocalService(channel, partyServiceInfo, new WifiP2pManager.ActionListener() {
+            p2pManager.clearLocalServices(channel, new WifiP2pManager.ActionListener() {
                 @Override
                 public void onSuccess() {
+                    Log.d(LOG_TAG,"Cleared local services, calling add");
+                    p2pManager.addLocalService(channel, partyServiceInfo, new WifiP2pManager.ActionListener() {
+                        @Override
+                        public void onSuccess() {
+                            Log.d(LOG_TAG, "Advertising service sucess");
 
-                    Log.d(LOG_TAG, "Advertising service sucess!");
+
+                        }
+
+                        @Override
+                        public void onFailure(int reason) {
+                            Log.d(LOG_TAG, "Advertising service failed!Reason code is" + reason);
+                        }
+                    });
+
                 }
 
                 @Override
                 public void onFailure(int reason) {
-                    Log.d(LOG_TAG, "Advertising service failed!Reason code is" + reason);
+
                 }
             });
+
 
         /*have to discover services to be discoverable
          * not doing anything after discovering really */
@@ -144,6 +158,20 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                     @Override
                     public void onSuccess() {
                         //Nothing done as of now
+                        p2pManager.discoverServices(channel, new WifiP2pManager.ActionListener() {
+
+                            @Override
+                            public void onSuccess() {
+
+                                Log.d(LOG_TAG, "Discovery initiated successfully..");
+                            }
+
+                            @Override
+                            public void onFailure(int arg0) {
+                                Log.d(LOG_TAG, "Discovery initiation failed-reason code is:" + arg0);
+
+                            }
+                        });
                     }
 
                     @Override
@@ -151,21 +179,6 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
                         //nothing done as of now
                     }
                 });
-        p2pManager.discoverServices(channel, new WifiP2pManager.ActionListener() {
-
-            @Override
-            public void onSuccess() {
-
-                Log.d(LOG_TAG, "Discovery initiated successfully..");
-            }
-
-            @Override
-            public void onFailure(int arg0) {
-                Log.d(LOG_TAG, "Discovery initiation failed-reason code is:" + arg0);
-
-            }
-        });
-
     }
 
     @Override
@@ -257,6 +270,11 @@ public class ConnectionManager extends ConnectionTemplate implements WifiP2pMana
             case PartyHostListener.MEMBERDATA_RECEIVED:
                 MemberListAdapter memListAdapter=(MemberListAdapter) MembersListFragment.rv.getAdapter();
                 memListAdapter.updateMemberList(SharedBox.getListOfMembers());
+                break;
+            case PartyHostListener.SOMECLIENT_LEFT:
+                MembersListFragment.listOfMembers.remove(SharedBox.getMemberToRemove());
+                MembersListFragment.memListAdapter.notifyDataSetChanged();
+                SharedBox.setMemberToRemove(null);
                 break;
 
             default:

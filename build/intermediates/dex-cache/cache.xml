@@ -115,7 +115,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="d28f23805ca2376ed045a7f9b0665b93bf459e91">
+        sha1="34ef00cd49ba96d550965374b8072fc8490b6aa3">
         <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_caa132043a9ecbc44ad2b3520351c017a0a1bc17\classes.dex" />
     </item>
     <item
@@ -151,7 +151,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="b5e60610b360529c7a76a9130e89f584015cf877">
+        sha1="40be1cac42658c5c16fa7993b659c86b31d93969">
         <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_c7dc2471c0bcc9b66d2250f2a683a7fa8fde7506\classes.dex" />
     </item>
     <item

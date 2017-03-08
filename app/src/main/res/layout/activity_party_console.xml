@@ -1,10 +1,11 @@
-<RelativeLayout
+<LinearLayout
     android:id="@+id/consolemain_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".host.PartyConsole">
 
     <android.support.v7.widget.Toolbar
@@ -31,18 +32,19 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/consolepager"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_below="@id/consoletab_layout"/>
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/textView"
         android:background="#000000"
         android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_below="@id/consolepager">
 
 
         <TextView
@@ -59,16 +61,18 @@
             android:layout_alignParentStart="false"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:layout_weight="0.65"
+            android:layout_weight="1"
             />
 
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2">
 
             <Button
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_alignTop="@id/textView"
                 android:id="@+id/playbutton"
                 android:background="@android:drawable/ic_media_play"
@@ -81,7 +85,8 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
                 android:layout_alignTop="@id/textView"
                 android:id="@+id/pausebutton"
                 android:background="@android:drawable/ic_media_pause"
@@ -95,24 +100,20 @@
 
         </FrameLayout>
 
-
         <Button
 
             android:id="@+id/stopbutton"
-            android:layout_width="55dp"
-
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/consolepager"
             android:layout_alignParentEnd="true"
-            android:layout_margin="-10dp"
-            android:layout_marginBottom="-2dp"
-            android:layout_marginEnd="60dp"
+
             android:background="@android:drawable/alert_light_frame"
             android:backgroundTint="#A9F5F2"
-            android:elevation="0dp"
             android:onClick="onStop"
             android:visibility="visible" />
         />
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
