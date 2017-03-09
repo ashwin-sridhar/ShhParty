@@ -3,24 +3,6 @@
 
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3d13e510077b35fe8e49930a627dd849ad5da0dc">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-10.2.0_05f4519fa1a7f1273d29474a4c66d87063cbcca1\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Ashwin\.gradle\caches\modules-2\files-2.1\org.nanohttpd\nanohttpd\2.3.1\a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c\nanohttpd-2.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\nanohttpd-2.3.1_9b0771a6052d8dd8b29fbae50f966fcf40ed5a02\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
@@ -39,12 +21,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\jars\classes.jar"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
-        sha1="1ac56e5801e986583cbe27f2cce57f626cc7ff93">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-10.2.0_46ea296696a881bd1eaffd25f381295dab4fb3ad\classes.dex" />
+        sha1="8084aaf0bbab083df7de676f565585306505fc5a">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_344cfd23e60d718e1dea4b1ade80bd6cc3ca9e0d\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -57,48 +39,39 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_439366d450ecc6a38125ecd090bfeec9ad60fa99\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.2.1\jars\libs\internal_impl-23.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="bd48446a8b4b2fdcac0e38f49b5d6dc3abb1eefa">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_4b8dc2b9500a327429b990c4434a36b5443b6c95\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Ashwin\.gradle\caches\modules-2\files-2.1\org.nanohttpd\nanohttpd-webserver\2.3.1\d2a9164bc7b71efc1e4ae313ee9ca4f8f7b96251\nanohttpd-webserver-2.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d2a9164bc7b71efc1e4ae313ee9ca4f8f7b96251">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\nanohttpd-webserver-2.3.1_6d32349eda6928ec95f654187750546f7a039523\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Ashwin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.0.0_a0ab09514a05a38ceef1e3b176a04057a799289f\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_87572d209ad6f5428ef733fa2cd226c989e282da\classes.dex" />
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_8c1da1f9cd9fe6089d21fd6ade1efba379ffb6f7\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="673d77a5bbddd766037f088e775df525c46407f0">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_f08fd76c7f986d74715c1b0ea84fb6bb9f275471\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="90a26f3aa6f2c13f4449d3d3f4f8f9c54c6e64dd">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_50ac2c63d9441e593e4911498af66df214ce88a9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.0.0_bd6113c26c282171a8bcdddf62329f16bf6148b4\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -111,30 +84,39 @@
     </item>
     <item
         is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="34ef00cd49ba96d550965374b8072fc8490b6aa3">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_caa132043a9ecbc44ad2b3520351c017a0a1bc17\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
-        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_1494060cbc5c47875ad3aac272c80f2eb220598a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
         <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.2.1_800a52f760409ac4cc058e62ed8578ae57dc3030\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_f9e53514ea7d3e12ef6e33afb29d072a12b2fc1b\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e3885783ff8926ed9e2fdcd16816c2e1e73e7aee">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.2.1_7be65ccc84a866a70e2ff04f1bd9e509ae8f13f1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="b95d10913c24f217dca25ccfb8293a04ebfed3a8">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v13-23.2.1_feab9cac32479fe691a85c2da497ac5ef17d8d46\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -162,6 +144,159 @@
         revision="25.0.0"
         sha1="673d77a5bbddd766037f088e775df525c46407f0">
         <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-23.2.1_00f7e120ef68360e30e665027e63aee210571f07\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3d13e510077b35fe8e49930a627dd849ad5da0dc">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-10.2.0_05f4519fa1a7f1273d29474a4c66d87063cbcca1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Ashwin\.gradle\caches\modules-2\files-2.1\org.nanohttpd\nanohttpd\2.3.1\a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c\nanohttpd-2.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a8d54d1ca554a77f377eff6bf9e16ca8383c8f6c">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\nanohttpd-2.3.1_9b0771a6052d8dd8b29fbae50f966fcf40ed5a02\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\10.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bd75f9f0296fe220da6d0ad961831b04541c4452">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-tasks-10.2.0_09cc3bf9b71991929c95dca014f149a2537e6ede\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1ac56e5801e986583cbe27f2cce57f626cc7ff93">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-10.2.0_46ea296696a881bd1eaffd25f381295dab4fb3ad\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="e4d0cbb0b999604b349062f0214a0a228a7fd151">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-23.2.1_439366d450ecc6a38125ecd090bfeec9ad60fa99\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.2.1\jars\libs\internal_impl-23.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bd48446a8b4b2fdcac0e38f49b5d6dc3abb1eefa">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_4b8dc2b9500a327429b990c4434a36b5443b6c95\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\design\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="72961d8b453b46e277702f18de9d210bc019e36e">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-23.2.1_f81fca58280eb2d42a86fb56c413dc0d1827cbca\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Ashwin\.gradle\caches\modules-2\files-2.1\org.nanohttpd\nanohttpd-webserver\2.3.1\d2a9164bc7b71efc1e4ae313ee9ca4f8f7b96251\nanohttpd-webserver-2.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d2a9164bc7b71efc1e4ae313ee9ca4f8f7b96251">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\nanohttpd-webserver-2.3.1_6d32349eda6928ec95f654187750546f7a039523\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Ashwin\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.0.0_a0ab09514a05a38ceef1e3b176a04057a799289f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.2.1\jars\libs\internal_impl-23.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="bd48446a8b4b2fdcac0e38f49b5d6dc3abb1eefa">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-23.2.1_1ed90033bcc1fef55cc76f19b20d0e2421f63fd7\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\10.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d08bb32b88df3dbcbe1d498c3c57f020b8c521ec">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-location-10.2.0_d144be1d2f5053f7df2ad24adbe66f41387efae1\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_87572d209ad6f5428ef733fa2cd226c989e282da\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="34ef00cd49ba96d550965374b8072fc8490b6aa3">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_caa132043a9ecbc44ad2b3520351c017a0a1bc17\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\10.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3d13e510077b35fe8e49930a627dd849ad5da0dc">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-10.2.0_5cc0ca3f8b798ed4721d63823a5fa2727cbf9893\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="D:\PPTK\SilentParty\Shhparty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_1494060cbc5c47875ad3aac272c80f2eb220598a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\10.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1ac56e5801e986583cbe27f2cce57f626cc7ff93">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-10.2.0_aa67b43dc327bd652f9568c6f537b2e02938c4ba\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Gitrepo\ShhParty\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\23.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3469cb457f10f74c28cbc05f069b6c894f6cbdd0">
+        <dex dex="D:\Gitrepo\ShhParty\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-23.2.1_b6fa8bfbce9c97daf0a8c41748492fb2fbe01743\classes.dex" />
     </item>
 
 </items>

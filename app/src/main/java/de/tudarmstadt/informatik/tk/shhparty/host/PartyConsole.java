@@ -46,6 +46,7 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
     Button playButton;
     Button pauseButton;
     TextView songName;
+    boolean resuming=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,9 +200,13 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
         playButton.setVisibility(View.INVISIBLE);
         pauseButton.setVisibility(View.VISIBLE);
 
-        songName.setText(CommonUtils.derivePlaylist().get(MusicXpress.FIRST_SONG).getMusicTitle());
+        if(!resuming){
+            songName.setText(CommonUtils.derivePlaylist().get(MusicXpress.FIRST_SONG).getMusicTitle());
+        }
         // TODO: 3/5/2017 Fire network call to play 
         musicSrv.onPlay();
+        resuming=false;
+
     }
 
     public void onPause(View view){
@@ -210,6 +215,7 @@ public class PartyConsole extends AppCompatActivity implements GoogleApiClient.C
         playButton.setVisibility(View.VISIBLE);
         // TODO: 3/5/2017 Fire network call to pause 
         musicSrv.onPause(view);
+        resuming=true;
 
     }
 

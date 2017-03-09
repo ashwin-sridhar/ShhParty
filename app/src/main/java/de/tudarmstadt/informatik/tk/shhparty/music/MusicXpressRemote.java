@@ -97,6 +97,8 @@ public class MusicXpressRemote extends Service implements
 
     @Override
     public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+
+        Log.d("MusicXpressRemote","Error in preparing"+i+":>"+i1);
         return false;
     }
 
@@ -139,7 +141,7 @@ public class MusicXpressRemote extends Service implements
         PartyHome.songNameInHome.setText(trackName);
 
         try{
-            player.setDataSource(trackUrl);
+            player.setDataSource(getApplicationContext(),Uri.parse(trackUrl));
 
         }
         catch(Exception e){
